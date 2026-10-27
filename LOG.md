@@ -58,6 +58,15 @@ edited, deleted, or command run.
 | 2026-10-27T12:06:54Z | Created .env.local with MONGODB_URI template | .env.local (gitignored) | Connection string template with <db_password> placeholder comment |
 | 2026-10-27T12:06:54Z | Vercel deployment | vercel.json | Deployed via `vercel` CLI linked to GitHub repo PastelSalt/niwa-website; Production URL: https://niwa-website-six.vercel.app; VITE_API_BASE_URL env var set; SPA route fallback configured |
 | 2026-10-27T12:06:54Z | Final verification | lint, typecheck, test, build | All four pass: ESLint clean, tsc --noEmit clean, vitest 1 test passed, vite build succeeded |
+| 2026-10-27T12:22:00Z | Created comprehensive unit tests | src/features/items/schemas/item-schemas.test.ts, breadcrumb.test.ts, tree.test.ts, src/lib/date.test.ts, errors.test.ts, utils.test.ts | Item validation (Zod schemas), breadcrumb construction, tree build/find/toggle, date formatting, error normalization, cn utility |
+| 2026-10-27T12:22:00Z | Created component tests | src/features/items/components/item-tree.test.tsx, item-detail-panel.test.tsx | Tree expand/collapse, select, create, update, delete; detail panel view/edit/save/delete with QueryClientProvider wrapper |
+| 2026-10-27T12:22:00Z | Created integration tests | src/features/items/api/item-api.integration.test.ts | Item API: create, update (version concurrency), delete, children, tree, move, archive, restore with mocked apiClient |
+| 2026-10-27T12:22:00Z | Created test helpers | src/test/helpers.tsx | withProviders wrapper (QueryClientProvider) for component tests |
+| 2026-10-27T12:22:00Z | Created E2E scaffolding | playwright.config.ts, src/e2e/critical-journeys.spec.ts | Playwright config (5 projects), critical journeys: auth, inbox capture, projects/hierarchy, search, keyboard shortcuts |
+| 2026-10-27T12:22:00Z | API authorization | ProtectedRoute component, auth error handling, session expiration | Route protection redirects unauthenticated users to /login; ApiError distinguishes 401/403/404/500; session reload on mount |
+| 2026-10-27T12:22:00Z | Documentation | README.md, .env.local.example | Setup instructions, features, architecture, testing, deployment, environment variables, known limitations, roadmap |
+| 2026-10-27T12:22:00Z | Committed and pushed Milestone 6 | 22 files, 1390 insertions | Pushed to https://github.com/PastelSalt/niwa-website.git (main) |
+| 2026-10-27T12:22:00Z | Final verification | lint, typecheck, test, build | All four pass: ESLint clean (0 errors, 0 warnings), tsc --noEmit clean, vitest 62 tests passed across 10 files, vite build succeeded |
 
 ---
 
