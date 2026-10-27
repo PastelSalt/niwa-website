@@ -19,7 +19,6 @@
       "onFail": "download"
     }
   },
-  "packageManager": "pnpm@12.15.0",
   "type": "module",
   "dependencies": {
     "bcryptjs": "^2.4.3",

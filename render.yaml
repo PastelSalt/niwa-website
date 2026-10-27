@@ -2,8 +2,9 @@ services:
   - type: web
     name: niwa-api
     env: node
-    buildCommand: cd backend && pnpm install && pnpm run build
-    startCommand: cd backend && pnpm run start
+    rootDir: backend
+    buildCommand: pnpm install && pnpm run build
+    startCommand: pnpm run start
     envVars:
       - key: NODE_ENV
         value: production
