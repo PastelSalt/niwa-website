@@ -1,19 +1,32 @@
 import { cleanup } from "@testing-library/react";
-import { afterEach, beforeEach, beforeAll, afterAll, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
+import { afterEach, beforeEach, afterAll, vi } from "vitest";
+import { queryClient } from "@/app/query-client";
+
+// Set API base URL for test environment
+Object.defineProperty(import.meta, "env", {
+  value: { VITE_API_BASE_URL: "/api/v1" },
+  writable: true,
+});
 
 beforeEach(() => {
-  vi.useFakeTimers();
+  queryClient.clear();
+
+  // Mock fetch to avoid real API calls in component tests
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      json: async () => ({}),
+    }))
+  );
 });
 
 afterEach(() => {
   cleanup();
-  vi.useRealTimers();
-});
-
-beforeAll(() => {
-  vi.stubGlobal("crypto", {
-    randomUUID: vi.fn(() => "test-uuid-1234"),
-  });
+  queryClient.clear();
+  vi.unstubAllGlobals();
 });
 
 afterAll(() => {

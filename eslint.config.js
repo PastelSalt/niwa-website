@@ -38,6 +38,6 @@ export default tseslintConfig(
     },
   },
   {
-    ignores: ["node_modules/", "dist/", "build/"],
+    ignores: ["node_modules/", "dist/", "build/", "src/e2e/"],
   }
 );

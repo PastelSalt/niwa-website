@@ -17,10 +17,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vite/client", "vitest/globals", "node"],
+    "types": ["vite/client", "vitest/globals", "node", "@testing-library/jest-dom"],
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/e2e", "node_modules", "dist"]
 }

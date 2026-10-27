@@ -15,6 +15,7 @@ interface TreeProps {
   onItemSelect?: (item: Item) => void;
   onItemCreate?: (parentId: string | null) => void;
   onItemUpdate?: (item: Item) => void;
+  onItemDelete?: (itemId: string) => void;
 }
 
 export function ItemTree({
@@ -22,6 +23,7 @@ export function ItemTree({
   onItemSelect,
   onItemCreate,
   onItemUpdate,
+  onItemDelete,
 }: TreeProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -80,10 +82,11 @@ export function ItemTree({
           if (selectedId === id) {
             setSelectedId(null);
           }
+          onItemDelete?.(id);
         },
       });
     },
-    [deleteMutation, selectedId]
+    [deleteMutation, selectedId, onItemDelete]
   );
 
   return (

@@ -53,6 +53,11 @@ edited, deleted, or command run.
 | 2026-10-27T11:49:12Z | Updated AppLayout | src/components/layout/app-layout.tsx | Added KeyboardShortcuts component |
 | 2026-10-27T11:49:12Z | Updated Header | src/components/layout/header.tsx | Added search button navigating to /app/search |
 | 2026-10-27T11:49:12Z | Verified Milestone 5 | lint, typecheck, test, build | All four pass: ESLint clean, tsc --noEmit clean, vitest 1 test passed, vite build succeeded |
+| 2026-10-27T12:06:54Z | Initialized git repo, created .gitignore, committed, pushed to GitHub | .gitignore, .env.local (gitignored), src/lib/db.ts, tsconfig.json, 85 files | `git init`, `git branch -M main`, `git remote add origin https://github.com/PastelSalt/niwa-website.git`, `git push -u origin main` |
+| 2026-10-27T12:06:54Z | Installed mongodb driver and created DB connection utility | src/lib/db.ts, package.json, pnpm-lock.yaml | `pnpm add mongodb`, `pnpm add -D @types/node`; connectToMongoDB() with MONGODB_URI env var, cached client singleton via globalThis, getDatabase/closeMongoDB helpers |
+| 2026-10-27T12:06:54Z | Created .env.local with MONGODB_URI template | .env.local (gitignored) | Connection string template with <db_password> placeholder comment |
+| 2026-10-27T12:06:54Z | Vercel deployment | vercel.json | Deployed via `vercel` CLI linked to GitHub repo PastelSalt/niwa-website; Production URL: https://niwa-website-six.vercel.app; VITE_API_BASE_URL env var set; SPA route fallback configured |
+| 2026-10-27T12:06:54Z | Final verification | lint, typecheck, test, build | All four pass: ESLint clean, tsc --noEmit clean, vitest 1 test passed, vite build succeeded |
 
 ---
 

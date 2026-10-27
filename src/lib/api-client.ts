@@ -1,6 +1,6 @@
 import { ApiError, normalizeError } from "./errors";
 
-const API_BASE_URL = (import.meta as { env?: { VITE_API_BASE_URL?: string } }).env?.VITE_API_BASE_URL ?? "/api/v1";
+const API_BASE_URL = (import.meta as { env?: { VITE_API_BASE_URL?: string } }).env?.VITE_API_BASE_URL || "/api/v1";
 
 interface RequestInitExtended extends RequestInit {
   signal?: AbortSignal;
