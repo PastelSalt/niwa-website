@@ -4,15 +4,16 @@
   "description": "NIWA — A garden for your ideas. Monorepo containing frontend (React/Vite) and backend (Node/Express) services.",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter frontend run dev",
-    "build": "pnpm --filter frontend run build",
-    "preview": "pnpm --filter frontend run preview",
-    "lint": "pnpm --filter frontend run lint",
-    "typecheck": "pnpm --filter frontend run typecheck",
-    "test": "pnpm --filter frontend run test",
-    "test:watch": "pnpm --filter frontend run test:watch",
-    "e2e": "pnpm --filter frontend run e2e",
-    "format": "pnpm --filter frontend run format"
+    "dev": "cd frontend && pnpm run dev",
+    "build": "cd backend && npx pnpm install && npx pnpm run build",
+    "preview": "cd frontend && pnpm run preview",
+    "lint": "cd frontend && pnpm run lint",
+    "typecheck": "cd frontend && pnpm run typecheck",
+    "test": "cd frontend && pnpm run test",
+    "test:watch": "cd frontend && pnpm run test:watch",
+    "e2e": "cd frontend && pnpm run e2e",
+    "format": "cd frontend && pnpm run format",
+    "start": "cd backend && npx pnpm run start"
   },
   "devEngines": {
     "packageManager": {
