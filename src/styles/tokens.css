@@ -1,0 +1,58 @@
+@import "./globals.css";
+
+@layer base {
+  :root {
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --card: #ffffff;
+    --card-foreground: var(--color-charcoal-900);
+    --popover: #ffffff;
+    --popover-foreground: var(--color-charcoal-900);
+    --primary: var(--color-primary);
+    --primary-foreground: var(--color-primary-foreground);
+    --secondary: var(--color-secondary);
+    --secondary-foreground: var(--color-secondary-foreground);
+    --muted: var(--color-muted);
+    --muted-foreground: var(--color-muted-foreground);
+    --accent: var(--color-accent);
+    --accent-foreground: var(--color-accent-foreground);
+    --destructive: var(--color-destructive);
+    --destructive-foreground: var(--color-destructive-foreground);
+    --border: var(--color-border);
+    --input: var(--color-input);
+    --ring: var(--color-ring);
+    --radius: var(--radius);
+  }
+
+  .dark {
+    --background: var(--color-charcoal-900);
+    --foreground: var(--color-cream-50);
+    --card: var(--color-charcoal-800);
+    --card-foreground: var(--color-cream-50);
+    --popover: var(--color-charcoal-800);
+    --popover-foreground: var(--color-cream-50);
+    --primary: var(--color-sage-400);
+    --primary-foreground: var(--color-charcoal-900);
+    --secondary: var(--color-charcoal-700);
+    --secondary-foreground: var(--color-cream-50);
+    --muted: var(--color-charcoal-700);
+    --muted-foreground: var(--color-graygreen-400);
+    --accent: var(--color-blossom-800);
+    --accent-foreground: var(--color-blossom-200);
+    --destructive: var(--color-error-500);
+    --destructive-foreground: #ffffff;
+    --border: var(--color-charcoal-700);
+    --input: var(--color-charcoal-700);
+    --ring: var(--color-sage-400);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}

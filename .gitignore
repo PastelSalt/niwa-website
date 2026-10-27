@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+dist-ssr/
+*.local
+
+# Environment files (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
+
+# Vercel
+.vercel/
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,45 @@
+export const mockWorkspace = {
+  id: "workspace_123",
+  name: "Personal Workspace",
+  ownerId: "user_123",
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
+};
+
+export const mockItem = {
+  id: "item_123",
+  workspaceId: "workspace_123",
+  parentId: null,
+  title: "Build a Java Game Engine",
+  description: "",
+  type: "project" as const,
+  status: "in_progress" as const,
+  priority: "medium" as const,
+  position: 0,
+  tags: ["java", "rendering"],
+  dueAt: null,
+  estimatedMinutes: null,
+  version: 1,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
+  completedAt: null,
+};
+
+export const mockChildItem = {
+  id: "item_124",
+  workspaceId: "workspace_123",
+  parentId: "item_123",
+  title: "Rendering System",
+  description: "",
+  type: "project" as const,
+  status: "not_started" as const,
+  priority: "none" as const,
+  position: 0,
+  tags: [],
+  dueAt: null,
+  estimatedMinutes: null,
+  version: 1,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
+  completedAt: null,
+};
