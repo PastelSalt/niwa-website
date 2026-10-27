@@ -77,6 +77,7 @@ edited, deleted, or command run.
 | 2026-10-27T13:15:10Z | Created backend route handlers | backend/src/routes/{auth,workspaces,items,search,focus}.ts, backend/src/controllers/{auth,workspace,items,search,focus}.controller.ts, backend/src/models/{auth,item,workspace}.schema.ts | All spec endpoints: auth (register/login/logout/me/refresh), workspaces (CRUD), items (CRUD/children/tree/move/archive/restore), search, focus (overdue/upcoming) |
 | 2026-10-27T13:15:10Z | Backend verification | backend/ | TypeScript typecheck passes, ESLint passes (0 errors), build passes (dist/ generated) |
 | 2026-10-27T13:15:10Z | Created deployment and docs | backend/render.yaml, backend/openapi.yaml, frontend/.env.local.example | Render service config, OpenAPI 3.0 spec, frontend VITE_API_BASE_URL env template |
+| 2026-10-27T13:39:54Z | Fixed Render deployment | package.json, backend/package.json, render.yaml | Removed packageManager field (was causing yarn/pnpm confusion), added rootDir: backend, explicit pnpm install && pnpm run build commands |
 
 ---
 
