@@ -14,12 +14,5 @@
     "e2e": "cd frontend && pnpm run e2e",
     "format": "cd frontend && pnpm run format",
     "start": "cd backend && npx pnpm run start"
-  },
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "12.15.0",
-      "onFail": "download"
-    }
   }
 }

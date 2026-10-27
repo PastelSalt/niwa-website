@@ -12,13 +12,6 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "12.15.0",
-      "onFail": "download"
-    }
-  },
   "type": "module",
   "dependencies": {
     "bcryptjs": "^2.4.3",
