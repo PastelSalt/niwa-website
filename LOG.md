@@ -67,6 +67,10 @@ edited, deleted, or command run.
 | 2026-10-27T12:22:00Z | Documentation | README.md, .env.local.example | Setup instructions, features, architecture, testing, deployment, environment variables, known limitations, roadmap |
 | 2026-10-27T12:22:00Z | Committed and pushed Milestone 6 | 22 files, 1390 insertions | Pushed to https://github.com/PastelSalt/niwa-website.git (main) |
 | 2026-10-27T12:22:00Z | Final verification | lint, typecheck, test, build | All four pass: ESLint clean (0 errors, 0 warnings), tsc --noEmit clean, vitest 62 tests passed across 10 files, vite build succeeded |
+| 2026-10-27T12:46:14Z | Created GAPS.md | GAPS.md | Comprehensive gap analysis comparing codebase against NIWA Web Project Specification |
+| 2026-10-27T12:52:36Z | Created PLAN-06.5-Backend-Render.md | PLAN-06.5-Backend-Render.md | Backend implementation plan (Express+TypeScript+MongoDB under backend/, Render deploy) |
+| 2026-10-27T13:01:18Z | Updated PLAN-06.5-Backend-Render.md | PLAN-06.5-Backend-Render.md | Locked in open-question decisions: raw mongodb driver, JWT access+refresh HttpOnly cookies, separate domains (free tier), keep frontend at root + add backend/; added free-tier gotchas, render.yaml guidance, CORS/cookie config, exit criteria |
+| 2026-10-27T13:06:14Z | Created PLAN-06.4-Frontend-Migration.md | PLAN-06.4-Frontend-Migration.md | Frontend migration plan: move all frontend code from root into frontend/ subdirectory, preserve git history, update configs, prepare for sibling backend/ directory |
 
 ---
 
