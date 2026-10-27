@@ -78,6 +78,7 @@ edited, deleted, or command run.
 | 2026-10-27T13:15:10Z | Backend verification | backend/ | TypeScript typecheck passes, ESLint passes (0 errors), build passes (dist/ generated) |
 | 2026-10-27T13:15:10Z | Created deployment and docs | backend/render.yaml, backend/openapi.yaml, frontend/.env.local.example | Render service config, OpenAPI 3.0 spec, frontend VITE_API_BASE_URL env template |
 | 2026-10-27T13:39:54Z | Fixed Render deployment | package.json, backend/package.json, render.yaml | Removed packageManager field (was causing yarn/pnpm confusion), added rootDir: backend, explicit pnpm install && pnpm run build commands |
+| 2026-10-27T13:42:57Z | Fixed Render deployment again | package.json, render.yaml | Changed root package.json scripts to use npx pnpm (works even if Render defaults to yarn), kept render.yaml rootDir: backend with npx pnpm commands |
 
 ---
 
