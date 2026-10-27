@@ -1,29 +1,19 @@
 {
-  "name": "niwa-website",
+  "name": "niwa",
   "version": "1.0.0",
-  "description": "NIWA Web — A garden for your ideas. Hierarchical project management web application.",
-  "main": "index.js",
+  "description": "NIWA — A garden for your ideas. Monorepo containing frontend (React/Vite) and backend (Node/Express) services.",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "e2e": "playwright test",
-    "format": "prettier --write ."
+    "dev": "pnpm --filter frontend run dev",
+    "build": "pnpm --filter frontend run build",
+    "preview": "pnpm --filter frontend run preview",
+    "lint": "pnpm --filter frontend run lint",
+    "typecheck": "pnpm --filter frontend run typecheck",
+    "test": "pnpm --filter frontend run test",
+    "test:watch": "pnpm --filter frontend run test:watch",
+    "e2e": "pnpm --filter frontend run e2e",
+    "format": "pnpm --filter frontend run format"
   },
-  "keywords": [
-    "productivity",
-    "hierarchical",
-    "tasks",
-    "projects",
-    "react",
-    "typescript"
-  ],
-  "author": "",
-  "license": "ISC",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -31,41 +21,5 @@
       "onFail": "download"
     }
   },
-  "packageManager": "pnpm@12.15.0",
-  "type": "module",
-  "dependencies": {
-    "@hookform/resolvers": "^6.0.0",
-    "@tanstack/react-query": "^5.105.0",
-    "clsx": "^2.1.1",
-    "lucide-react": "^1.61.0",
-    "mongodb": "^7.7.0",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "react-hook-form": "^7.91.0",
-    "react-router-dom": "^7.18.4",
-    "tailwind-merge": "^3.7.0",
-    "zod": "^4.6.7"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@tailwindcss/postcss": "^4.3.3",
-    "@testing-library/jest-dom": "^7.0.1",
-    "@testing-library/react": "^16.3.3",
-    "@types/node": "^26.6.5",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.2",
-    "autoprefixer": "^10.6.1",
-    "eslint": "^10.13.0",
-    "eslint-config-prettier": "^9.1.0",
-    "jsdom": "^30.1.3",
-    "playwright": "^1.64.1",
-    "postcss": "^8.5.31",
-    "prettier": "^3.9.10",
-    "tailwindcss": "^4.3.3",
-    "typescript": "5.5.4",
-    "typescript-eslint": "^8.72.0",
-    "vite": "^8.3.5",
-    "vitest": "^5.0.5"
-  }
+  "packageManager": "pnpm@12.15.0"
 }

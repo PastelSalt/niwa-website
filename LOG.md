@@ -71,6 +71,7 @@ edited, deleted, or command run.
 | 2026-10-27T12:52:36Z | Created PLAN-06.5-Backend-Render.md | PLAN-06.5-Backend-Render.md | Backend implementation plan (Express+TypeScript+MongoDB under backend/, Render deploy) |
 | 2026-10-27T13:01:18Z | Updated PLAN-06.5-Backend-Render.md | PLAN-06.5-Backend-Render.md | Locked in open-question decisions: raw mongodb driver, JWT access+refresh HttpOnly cookies, separate domains (free tier), keep frontend at root + add backend/; added free-tier gotchas, render.yaml guidance, CORS/cookie config, exit criteria |
 | 2026-10-27T13:06:14Z | Created PLAN-06.4-Frontend-Migration.md | PLAN-06.4-Frontend-Migration.md | Frontend migration plan: move all frontend code from root into frontend/ subdirectory, preserve git history, update configs, prepare for sibling backend/ directory |
+| 2026-10-27T13:07:54Z | Migrated frontend to frontend/ directory | frontend/*, package.json, vercel.json, .gitignore, README.md | `git mv` all frontend files (package.json, pnpm-lock.yaml, vite.config.ts, tsconfig.json, eslint.config.js, .prettierrc, postcss.config.mjs, index.html, vercel.json, .env.local.example, scripts/, src/, playwright.config.ts, .vercel) into frontend/; created root package.json (delegates to frontend/), root vercel.json (rootDirectory: frontend/); .gitignore already path-agnostic; all checks pass from frontend/ (typecheck, lint, 62 tests, build) |
 
 ---
 
