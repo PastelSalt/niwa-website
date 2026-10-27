@@ -1,0 +1,619 @@
+openapi: 3.0.3
+info:
+  title: NIWA API
+  version: 1.0.0
+  description: |
+    NIWA (庭) — A hierarchical project management API.
+    Supports authentication, workspaces, arbitrarily deep item nesting,
+    search, and focus views.
+servers:
+  - url: https://niwa-api.onrender.com
+    description: Production API
+  - url: http://localhost:10000
+    description: Local development API
+tags:
+  - name: auth
+    description: Authentication endpoints
+  - name: workspaces
+    description: Workspace management
+  - name: items
+    description: Hierarchical item management
+  - name: search
+    description: Global search
+  - name: focus
+    description: Focus view aggregation
+paths:
+  /auth/register:
+    post:
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "409":
+          description: Email already registered
+  /auth/login:
+    post:
+      tags: [auth]
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+  /auth/logout:
+    post:
+      tags: [auth]
+      summary: Log out
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Logged out
+  /auth/me:
+    get:
+      tags: [auth]
+      summary: Get current user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeResponse"
+        "401":
+          description: Not authenticated
+  /auth/refresh:
+    post:
+      tags: [auth]
+      summary: Refresh access token
+      responses:
+        "200":
+          description: New access token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RefreshResponse"
+  /workspaces:
+    get:
+      tags: [workspaces]
+      summary: List workspaces
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: List of workspaces
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workspaces:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Workspace"
+    post:
+      tags: [workspaces]
+      summary: Create a workspace
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateWorkspaceInput"
+      responses:
+        "201":
+          description: Workspace created
+  /workspaces/{workspaceId}:
+    get:
+      tags: [workspaces]
+      summary: Get a workspace
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/WorkspaceId"
+      responses:
+        "200":
+          description: Workspace details
+    patch:
+      tags: [workspaces]
+      summary: Update a workspace
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/WorkspaceId"
+      responses:
+        "200":
+          description: Workspace updated
+    delete:
+      tags: [workspaces]
+      summary: Delete a workspace
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/WorkspaceId"
+      responses:
+        "200":
+          description: Workspace deleted
+  /items:
+    post:
+      tags: [items]
+      summary: Create an item
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateItemInput"
+      responses:
+        "201":
+          description: Item created
+  /items/{itemId}:
+    get:
+      tags: [items]
+      summary: Get an item
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      responses:
+        "200":
+          description: Item details
+    patch:
+      tags: [items]
+      summary: Update an item
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateItemInput"
+      responses:
+        "200":
+          description: Item updated
+        "409":
+          description: Version conflict
+    delete:
+      tags: [items]
+      summary: Delete an item
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      responses:
+        "200":
+          description: Item deleted
+  /items/{itemId}/children:
+    get:
+      tags: [items]
+      summary: Get children of an item
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      responses:
+        "200":
+          description: Child items
+  /items/{itemId}/tree:
+    get:
+      tags: [items]
+      summary: Get item subtree
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      responses:
+        "200":
+          description: Tree of items
+  /items/{itemId}/move:
+    post:
+      tags: [items]
+      summary: Move an item to another parent
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MoveItemInput"
+      responses:
+        "200":
+          description: Item moved
+        "400":
+          description: Cycle detected
+        "409":
+          description: Version conflict
+  /items/{itemId}/archive:
+    post:
+      tags: [items]
+      summary: Archive an item
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      responses:
+        "200":
+          description: Item archived
+  /items/{itemId}/restore:
+    post:
+      tags: [items]
+      summary: Restore an archived item
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+      responses:
+        "200":
+          description: Item restored
+  /search:
+    get:
+      tags: [search]
+      summary: Search items
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+      responses:
+        "200":
+          description: Search results
+  /focus:
+    get:
+      tags: [focus]
+      summary: Get focus view
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: projectId
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: priority
+          in: query
+          schema:
+            type: string
+        - name: tag
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Focus sections
+  /focus/overdue:
+    get:
+      tags: [focus]
+      summary: Get overdue items
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Overdue items
+  /focus/upcoming:
+    get:
+      tags: [focus]
+      summary: Get upcoming items
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Upcoming items
+  /health:
+    get:
+      tags: []
+      summary: Health check
+      responses:
+        "200":
+          description: Service is healthy
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token
+  parameters:
+    ItemId:
+      name: itemId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Item ID
+    WorkspaceId:
+      name: workspaceId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Workspace ID
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+          nullable: true
+        avatarUrl:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Workspace:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        ownerId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+        workspaceId:
+          type: string
+        parentId:
+          type: string
+          nullable: true
+        title:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          enum: [project, task, note, idea]
+        status:
+          type: string
+          enum: [not_started, in_progress, blocked, completed]
+        priority:
+          type: string
+          enum: [none, low, medium, high, critical]
+        position:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        dueAt:
+          type: string
+          format: date-time
+          nullable: true
+        estimatedMinutes:
+          type: integer
+          nullable: true
+        version:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        archivedAt:
+          type: string
+          format: date-time
+          nullable: true
+    RegisterInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+          maxLength: 128
+        name:
+          type: string
+          maxLength: 100
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        session:
+          type: object
+          properties:
+            accessToken:
+              type: string
+            refreshToken:
+              type: string
+            expiresAt:
+              type: string
+              format: date-time
+    MeResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+    RefreshResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+    CreateWorkspaceInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+    CreateItemInput:
+      type: object
+      required: [workspaceId, title]
+      properties:
+        workspaceId:
+          type: string
+        parentId:
+          type: string
+          nullable: true
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        type:
+          type: string
+          enum: [project, task, note, idea]
+          default: task
+        status:
+          type: string
+          enum: [not_started, in_progress, blocked, completed]
+          default: not_started
+        priority:
+          type: string
+          enum: [none, low, medium, high, critical]
+          default: none
+        position:
+          type: integer
+          minimum: 0
+          default: 0
+        tags:
+          type: array
+          items:
+            type: string
+        dueAt:
+          type: string
+          format: date-time
+          nullable: true
+        estimatedMinutes:
+          type: integer
+          minimum: 0
+          nullable: true
+    UpdateItemInput:
+      type: object
+      required: [version]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        type:
+          type: string
+          enum: [project, task, note, idea]
+        status:
+          type: string
+          enum: [not_started, in_progress, blocked, completed]
+        priority:
+          type: string
+          enum: [none, low, medium, high, critical]
+        position:
+          type: integer
+          minimum: 0
+        tags:
+          type: array
+          items:
+            type: string
+        dueAt:
+          type: string
+          format: date-time
+          nullable: true
+        estimatedMinutes:
+          type: integer
+          minimum: 0
+          nullable: true
+        version:
+          type: integer
+          minimum: 0
+    MoveItemInput:
+      type: object
+      required: [parentId, position, version]
+      properties:
+        parentId:
+          type: string
+          nullable: true
+        position:
+          type: integer
+          minimum: 0
+        version:
+          type: integer
+          minimum: 0
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
