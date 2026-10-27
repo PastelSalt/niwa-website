@@ -79,6 +79,7 @@ edited, deleted, or command run.
 | 2026-10-27T13:15:10Z | Created deployment and docs | backend/render.yaml, backend/openapi.yaml, frontend/.env.local.example | Render service config, OpenAPI 3.0 spec, frontend VITE_API_BASE_URL env template |
 | 2026-10-27T13:39:54Z | Fixed Render deployment | package.json, backend/package.json, render.yaml | Removed packageManager field (was causing yarn/pnpm confusion), added rootDir: backend, explicit pnpm install && pnpm run build commands |
 | 2026-10-27T13:42:57Z | Fixed Render deployment again | package.json, render.yaml | Changed root package.json scripts to use npx pnpm (works even if Render defaults to yarn), kept render.yaml rootDir: backend with npx pnpm commands |
+| 2026-10-27T13:57:08Z | Fixed Render npm EBADDEVENGINES | root/package.json, frontend/package.json, backend/package.json | Removed devEngines.packageManager and packageManager fields (npm rejects pnpm in devEngines), npx pnpm now works cleanly |
 
 ---
 
