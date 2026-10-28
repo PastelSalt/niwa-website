@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { ChevronRight, ChevronDown, Plus, Edit2, Trash2 } from "lucide-react";
+import { useState, useCallback, useRef } from "react";
+import { ChevronRight, ChevronDown, Plus, Edit2, Trash2, ArrowRight } from "lucide-react";
 import {
   useUpdateItem,
   useDeleteItem,
+  useMoveItem,
 } from "@/features/items/hooks/use-items";
 import type { Item } from "@/features/items/types";
 import { buildTree, type TreeItemNode } from "@/features/items/utils/tree";
 import { cn } from "@/lib/utils";
+import { MoveDialog } from "./move-dialog";
 
 interface TreeProps {
   items: Item[];
@@ -29,11 +31,52 @@ export function ItemTree({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
+  const treeRef = useRef<HTMLDivElement>(null);
 
   const updateMutation = useUpdateItem();
   const deleteMutation = useDeleteItem();
+  const moveMutation = useMoveItem();
 
   const tree = buildTree(items);
+
+  const [moveOpen, setMoveOpen] = useState(false);
+  const [moveItemId, setMoveItemId] = useState<string | null>(null);
+
+  const handleMoveItem = (itemId: string, parentId: string | null) => {
+    const node = findNode(tree, itemId);
+    if (!node) return;
+    moveMutation.mutate(
+      {
+        itemId,
+        input: {
+          parentId,
+          position: 0,
+          version: node.version,
+        },
+      },
+      {
+        onSuccess: () => {
+          setMoveOpen(false);
+          setMoveItemId(null);
+        },
+      }
+    );
+  };
+
+  // Build flat list of all item IDs in tree order for keyboard navigation
+  const allItemIds = useCallback((): string[] => {
+    const ids: string[] = [];
+    const walk = (nodes: TreeItemNode[]) => {
+      for (const node of nodes) {
+        ids.push(node.id);
+        if (node.children && node.children.length > 0) {
+          walk(node.children);
+        }
+      }
+    };
+    walk(tree);
+    return ids;
+  }, [tree]);
 
   const handleToggleExpand = useCallback((id: string) => {
     setExpandedIds((prev) => {
@@ -89,8 +132,112 @@ export function ItemTree({
     [deleteMutation, selectedId, onItemDelete]
   );
 
+  // Keyboard navigation for tree
+  const handleTreeKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      // Don't handle if user is typing in an input
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
+      const ids = allItemIds();
+      if (ids.length === 0) return;
+
+      const currentIndex = selectedId ? ids.indexOf(selectedId) : -1;
+
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          if (currentIndex < ids.length - 1) {
+            setSelectedId(ids[currentIndex + 1]);
+            setEditingId(null);
+          } else {
+            setSelectedId(ids[0]);
+            setEditingId(null);
+          }
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          if (currentIndex > 0) {
+            setSelectedId(ids[currentIndex - 1]);
+            setEditingId(null);
+          } else {
+            setSelectedId(ids[ids.length - 1]);
+            setEditingId(null);
+          }
+          break;
+        case "ArrowRight": {
+          e.preventDefault();
+          const node = findNode(tree, selectedId || "");
+          if (node && node.children && node.children.length > 0) {
+            if (expandedIds.has(node.id)) {
+              // Already expanded, move to first child
+              setSelectedId(node.children[0].id);
+              setEditingId(null);
+            } else {
+              // Expand the branch
+              setExpandedIds((prev) => {
+                const next = new Set(prev);
+                next.add(node.id);
+                return next;
+              });
+            }
+          }
+          break;
+        }
+        case "ArrowLeft": {
+          e.preventDefault();
+          const node = findNode(tree, selectedId || "");
+          if (node && node.parentId) {
+            // Move to parent
+            setSelectedId(node.parentId);
+            setEditingId(null);
+          } else if (node && node.children && node.children.length > 0) {
+            // Collapse the branch
+            setExpandedIds((prev) => {
+              const next = new Set(prev);
+              next.delete(node.id);
+              return next;
+            });
+          }
+          break;
+        }
+        case "Enter": {
+          e.preventDefault();
+          const node = findNode(tree, selectedId || "");
+          if (node) {
+            onItemSelect?.(node);
+          }
+          break;
+        }
+        case " ": {
+          // Space to toggle expand/collapse
+          e.preventDefault();
+          const node = findNode(tree, selectedId || "");
+          if (node && node.children && node.children.length > 0) {
+            setExpandedIds((prev) => {
+              const next = new Set(prev);
+              if (next.has(node.id)) next.delete(node.id);
+              else next.add(node.id);
+              return next;
+            });
+          }
+          break;
+        }
+      }
+    },
+    [selectedId, tree, expandedIds, allItemIds, onItemSelect]
+  );
+
   return (
-    <div className="h-full flex flex-col min-w-0">
+    <div
+      className="h-full flex flex-col min-w-0"
+      onKeyDown={handleTreeKeyDown}
+      ref={treeRef}
+    >
       <TreeRows
         nodes={tree}
         depth={0}
@@ -99,6 +246,7 @@ export function ItemTree({
         onItemCreate={(parentId) => onItemCreate?.(parentId)}
         onItemUpdate={(item) => onItemUpdate?.(item)}
         onItemDelete={handleDelete}
+        onItemMove={handleMoveItem}
         onToggleExpand={handleToggleExpand}
         expandedIds={expandedIds}
         editingId={editingId}
@@ -114,6 +262,17 @@ export function ItemTree({
           <Plus className="mb-2 opacity-50" size={16} />
           No items yet. Create your first item.
         </div>
+      )}
+      {moveOpen && moveItemId && (
+        <MoveDialog
+          item={findNode(tree, moveItemId)!}
+          allItems={items}
+          onClose={() => {
+            setMoveOpen(false);
+            setMoveItemId(null);
+          }}
+          onMove={handleMoveItem}
+        />
       )}
     </div>
   );
@@ -139,6 +298,7 @@ interface TreeRowsProps {
   onItemCreate: (parentId: string | null) => void;
   onItemUpdate: (item: Item) => void;
   onItemDelete: (itemId: string) => void;
+  onItemMove: (itemId: string, parentId: string | null) => void;
   onToggleExpand: (id: string) => void;
   expandedIds: Set<string>;
   editingId: string | null;
@@ -158,6 +318,7 @@ function TreeRows({
   onItemCreate,
   onItemUpdate,
   onItemDelete,
+  onItemMove,
   onToggleExpand,
   expandedIds,
   editingId,
@@ -261,6 +422,18 @@ function TreeRows({
               >
                 <Trash2 size={12} />
               </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEditingId(null);
+                  onItemMove(node.id, node.parentId);
+                }}
+                className="p-1.5 rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
+                aria-label="Move"
+                title="Move to another parent"
+              >
+                <ArrowRight size={12} />
+              </button>
             </div>
             {isEditing && (
               <input
@@ -285,6 +458,7 @@ function TreeRows({
                 onItemCreate={onItemCreate}
                 onItemUpdate={onItemUpdate}
                 onItemDelete={onItemDelete}
+                onItemMove={onItemMove}
                 onToggleExpand={onToggleExpand}
                 expandedIds={expandedIds}
                 editingId={editingId}

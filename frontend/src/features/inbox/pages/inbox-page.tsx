@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Edit2, Trash2 } from "lucide-react";
+import { Plus, Edit2, Trash2, Folder } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { INBOX_QUERY_KEY } from "@/features/inbox/hooks/use-inbox";
 import type { Item } from "@/features/items/types";
@@ -11,6 +11,9 @@ export function InboxPage() {
   const [captureOpen, setCaptureOpen] = useState(false);
   const [captureTitle, setCaptureTitle] = useState("");
   const [captureError, setCaptureError] = useState<string | null>(null);
+  const [convertOpen, setConvertOpen] = useState(false);
+  const [convertItemId, setConvertItemId] = useState<string | null>(null);
+  const [convertType, setConvertType] = useState<Item["type"]>("project");
 
   const queryClient = useQueryClient();
 
@@ -75,6 +78,24 @@ export function InboxPage() {
     },
   });
 
+  const convertMutation = useMutation({
+    mutationFn: ({ itemId, type }: { itemId: string; type: Item["type"] }) =>
+      fetch(`/api/v1/inbox/${itemId}/convert`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type }),
+        credentials: "include",
+      }).then((res) => res.json()),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [INBOX_QUERY_KEY] });
+      setConvertOpen(false);
+      setConvertItemId(null);
+    },
+    onError: (err: unknown) => {
+      setCaptureError(err instanceof Error ? err.message : "Failed to convert item");
+    },
+  });
+
   const items: Item[] = Array.isArray(data) ? data : data?.items ?? [];
 
   const handleCaptureSubmit = (e: React.FormEvent) => {
@@ -96,6 +117,12 @@ export function InboxPage() {
   const handleDelete = (itemId: string) => {
     if (!window.confirm("Archive this item?")) return;
     deleteMutation.mutate(itemId);
+  };
+
+  const handleConvert = (item: Item) => {
+    setConvertItemId(item.id);
+    setConvertType(item.type === "project" ? "task" : "project");
+    setConvertOpen(true);
   };
 
   if (isLoading) {
@@ -205,6 +232,14 @@ export function InboxPage() {
                     <Edit2 size={14} />
                   </button>
                   <button
+                    onClick={() => handleConvert(item)}
+                    className="p-1.5 rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    aria-label="Convert"
+                    title="Convert to project/task"
+                  >
+                    <Folder size={14} />
+                  </button>
+                  <button
                     onClick={() => handleDelete(item.id)}
                     className="p-1.5 rounded-md text-muted-foreground hover:bg-error-50 hover:text-error-600"
                     aria-label="Archive"
@@ -217,6 +252,45 @@ export function InboxPage() {
           </div>
         )}
       </div>
+
+      {convertOpen && convertItemId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/50" onClick={() => setConvertOpen(false)} />
+          <div className="bg-card border border-border rounded-lg p-4 w-64 shadow-lg">
+            <h3 className="text-sm font-semibold mb-3">Convert to {convertType}</h3>
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-muted-foreground block">Type</label>
+              <select
+                value={convertType}
+                onChange={(e) => setConvertType(e.target.value as Item["type"])}
+                className="w-full px-3 py-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                <option value="project">Project</option>
+                <option value="task">Task</option>
+                <option value="note">Note</option>
+                <option value="idea">Idea</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-end gap-2 pt-3">
+              <button
+                onClick={() => setConvertOpen(false)}
+                className="px-3 py-1.5 rounded-md text-sm border border-input bg-background hover:bg-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  convertMutation.mutate({ itemId: convertItemId!, type: convertType });
+                }}
+                className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-sage-700 disabled:opacity-50"
+                disabled={convertMutation.isPending}
+              >
+                {convertMutation.isPending ? "Converting…" : "Convert"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
