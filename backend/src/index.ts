@@ -2,9 +2,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { createServer } from "node:http";
-import { app } from "./app";
+import { app } from "./app.js";
+import { getEnv } from "./config/env.js";
 
-const env = require("../config/env").getEnv();
+const env = getEnv();
 
 const server = createServer(app);
 

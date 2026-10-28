@@ -3,13 +3,13 @@ import {
   generateAccessToken,
   generateRefreshToken,
   getCookieOptions,
-} from "../lib/auth";
-import { getDatabase } from "../lib/db";
-import { registerSchema, loginSchema } from "../models/auth.schema";
-import { createError } from "../middleware/error";
+} from "../lib/auth.js";
+import { getDatabase } from "../lib/db.js";
+import { registerSchema, loginSchema } from "../models/auth.schema.js";
+import { createError } from "../middleware/error.js";
 import { compareSync, hashSync } from "bcryptjs";
 import { ObjectId } from "mongodb";
-import { getEnv } from "../config/env";
+import { getEnv } from "../config/env.js";
 
 function parseMs(expiry: string): number {
   const match = expiry.match(/^(\d+)([mhd])$/);

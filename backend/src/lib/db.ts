@@ -1,5 +1,5 @@
 import { MongoClient, Db, type MongoClientOptions } from "mongodb";
-import { getEnv } from "../config/env";
+import { getEnv } from "../config/env.js";
 
 const uri: string | undefined = getEnv().MONGODB_URI;
 

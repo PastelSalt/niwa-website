@@ -3,8 +3,8 @@ import {
   getFocus,
   getFocusOverdue,
   getFocusUpcoming,
-} from "../controllers/focus.controller";
-import { authenticate } from "../middleware/auth";
+} from "../controllers/focus.controller.js";
+import { authenticate } from "../middleware/auth.js";
 
 const router: Router = Router();
 

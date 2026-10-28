@@ -9,8 +9,8 @@ import {
   moveItem,
   archiveItem,
   restoreItem,
-} from "../controllers/items.controller";
-import { authenticate } from "../middleware/auth";
+} from "../controllers/items.controller.js";
+import { authenticate } from "../middleware/auth.js";
 
 const router: Router = Router();
 

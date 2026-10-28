@@ -1,12 +1,12 @@
 import { Response } from "express";
-import { getDatabase } from "../lib/db";
-import { createError } from "../middleware/error";
+import { getDatabase } from "../lib/db.js";
+import { createError } from "../middleware/error.js";
 import {
   createItemSchema,
   updateItemSchema,
   moveItemSchema,
-} from "../models/item.schema";
-import type { AuthRequest } from "../middleware/auth";
+} from "../models/item.schema.js";
+import type { AuthRequest } from "../middleware/auth.js";
 import { ObjectId } from "mongodb";
 
 function now(): Date {

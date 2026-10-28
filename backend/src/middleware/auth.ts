@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { verifyAccessToken } from "../lib/auth";
+import { verifyAccessToken } from "../lib/auth.js";
 
 export interface AuthRequest extends Request {
   user?: { userId: string; email: string; workspaceId?: string };

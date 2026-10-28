@@ -5,8 +5,8 @@ import {
   getWorkspace,
   updateWorkspace,
   deleteWorkspace,
-} from "../controllers/workspace.controller";
-import { authenticate } from "../middleware/auth";
+} from "../controllers/workspace.controller.js";
+import { authenticate } from "../middleware/auth.js";
 
 const router: Router = Router();
 

@@ -1,8 +1,8 @@
 import { Response } from "express";
-import { getDatabase } from "../lib/db";
-import { createError } from "../middleware/error";
-import { createWorkspaceSchema } from "../models/workspace.schema";
-import type { AuthRequest } from "../middleware/auth";
+import { getDatabase } from "../lib/db.js";
+import { createError } from "../middleware/error.js";
+import { createWorkspaceSchema } from "../models/workspace.schema.js";
+import type { AuthRequest } from "../middleware/auth.js";
 import { ObjectId } from "mongodb";
 
 export async function listWorkspaces(

@@ -1,6 +1,6 @@
 import { Response } from "express";
-import { getDatabase } from "../lib/db";
-import type { AuthRequest } from "../middleware/auth";
+import { getDatabase } from "../lib/db.js";
+import type { AuthRequest } from "../middleware/auth.js";
 
 export async function searchItems(
   req: AuthRequest,

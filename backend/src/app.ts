@@ -1,12 +1,12 @@
 import express, { Application } from "express";
 import cookieParser from "cookie-parser";
-import { corsMiddleware } from "./middleware/cors";
-import { errorHandler, notFoundHandler } from "./middleware/error";
-import authRoutes from "./routes/auth";
-import workspaceRoutes from "./routes/workspaces";
-import itemRoutes from "./routes/items";
-import searchRoutes from "./routes/search";
-import focusRoutes from "./routes/focus";
+import { corsMiddleware } from "./middleware/cors.js";
+import { errorHandler, notFoundHandler } from "./middleware/error.js";
+import authRoutes from "./routes/auth.js";
+import workspaceRoutes from "./routes/workspaces.js";
+import itemRoutes from "./routes/items.js";
+import searchRoutes from "./routes/search.js";
+import focusRoutes from "./routes/focus.js";
 
 export const app: Application = express();
 

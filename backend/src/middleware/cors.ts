@@ -1,5 +1,5 @@
 import cors from "cors";
-import { getEnv } from "../config/env";
+import { getEnv } from "../config/env.js";
 
 const env = getEnv();
 

@@ -5,8 +5,8 @@ import {
   logout,
   me,
   refresh,
-} from "../controllers/auth.controller";
-import { authenticate } from "../middleware/auth";
+} from "../controllers/auth.controller.js";
+import { authenticate } from "../middleware/auth.js";
 
 const router: Router = Router();
 
