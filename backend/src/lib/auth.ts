@@ -1,5 +1,11 @@
-import { sign, verify, type Secret } from "jsonwebtoken";
+import { createRequire } from "node:module";
 import { getEnv } from "../config/env.js";
+
+const require = createRequire(import.meta.url);
+const jwt = require("jsonwebtoken");
+const sign = jwt.sign;
+const verify = jwt.verify;
+type Secret = string | Buffer;
 
 const env = getEnv();
 
