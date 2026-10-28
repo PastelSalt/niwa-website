@@ -60,8 +60,8 @@ Analysis of the NIWA website codebase against the Project Specification. This fi
 **Frontend:** ItemTree component (expand/collapse, inline rename, add child, delete), ItemDetailPanel (view/edit/save), tree utilities (buildTree, findItem, toggleExpansion, buildBreadcrumb).
 
 **Missing:**
-- Drag-and-drop reordering (accessible keyboard/menu fallback not implemented)
-- Move items to another parent via UI (API exists, UI button missing)
+- Drag-and-drop reordering (spec 7.3 says drag-and-drop may be provided but equivalent accessible actions required — keyboard/menu reorder not implemented)
+- Move items to another parent via UI — **NOW IMPLEMENTED** (Move button added to each tree row with dialog showing eligible parents, excludes self and descendants to prevent cycles)
 - Reorder siblings via UI (API exists, UI missing)
 - Item counts and completion summaries in tree (spec 7.3)
 - "Empty branches communicate no children" (shows "No items yet" only at root level)
@@ -101,7 +101,7 @@ Analysis of the NIWA website codebase against the Project Specification. This fi
 **Missing:**
 - Real API integration (page not connected to backend)
 - Add description later (edit via detail panel only)
-- Convert idea to project/task (API exists, UI button missing)
+- Convert idea to project/task — **NOW IMPLEMENTED** (Convert button added to each Inbox item with type selection dialog)
 - Move item into hierarchy (API exists, UI button missing)
 - Keyboard focus preserved after creating items (spec 7.2)
 
@@ -209,11 +209,13 @@ Per spec 7.7, tags should be addable/removable/reusable.
 
 ## 14. Keyboard Shortcuts (Partial)
 
-**Implemented:** KeyboardShortcuts component with Ctrl/Cmd+K, Ctrl/Cmd+N, Escape handlers.
+**Implemented:** KeyboardShortcuts component with Ctrl/Cmd+K, Ctrl/Cmd+N, Escape handlers. All shortcuts are now wired to actions:
+- Ctrl/Cmd+K → navigates to `/app/search`
+- Ctrl/Cmd+N → navigates to `/app/projects`
+- Escape → closes panel / navigates to `/app/projects`
 
 **Missing:**
-- Wired to actual actions (onOpenSearch/onCreateItem/onClosePanel are no-ops in AppLayout)
-- Arrow keys for tree navigation (spec 13)
+- Arrow keys for tree navigation (spec 13) — **NOW IMPLEMENTED** (ArrowUp/Down navigate, ArrowRight expand/go child, ArrowLeft collapse/go parent, Enter select, Space toggle expand/collapse)
 - Shortcuts documentation page
 - Future customization (spec 13)
 
@@ -342,7 +344,7 @@ These are explicitly excluded from MVP and should NOT be implemented yet:
 | High | Inbox/Focus/Search real API integration | Medium | Yes — features use mock data |
 | High | Backend deployment to Render with env vars | Medium | Yes — no live API for frontend to call |
 | Medium | Drag-and-drop / keyboard reorder | Medium | No (accessible fallback needed) |
-| Medium | Move items between parents via UI | Medium | No (API exists, UI missing) |
+| Medium | Move items between parents via UI | Done | No (Move dialog implemented in UI) |
 | Medium | Notifications/toast system | Low | No |
 | Medium | Accessibility audit | Medium | No |
 | Medium | Large-tree virtualization | Medium | No |

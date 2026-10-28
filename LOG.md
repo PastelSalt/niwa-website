@@ -83,7 +83,12 @@ edited, deleted, or command run.
 | 2026-10-28T02:03:27Z | Fixed Render ERR_MODULE_NOT_FOUND | backend/tsconfig.json, backend/src/*.ts | Changed backend to module: Node16, moduleResolution: node16; added .js extensions to all relative ESM imports; fixed index.ts to use import instead of require; build and start now work on Render |
 | 2026-10-28T02:20:10Z | Fixed Render jsonwebtoken ESM export error | backend/src/lib/auth.ts | jsonwebtoken is CommonJS-only; replaced named ESM imports with createRequire() from node:module to load it as CJS |
 | 2026-10-28T02:44:07Z | Moved PLAN files to docs/ folder | docs/PLAN-*.md | Moved all 10 PLAN-*.md files from root into docs/ subdirectory via git mv (history preserved) |
-| 2026-10-28T02:48:31Z | Created CODEMAP.md | CODEMAP.md | Complete codebase map — all frontend/, backend/, docs/, and root files documented with purpose |
+| 2026-10-28T02:52:54Z | Added session rules to LOG.md | LOG.md | Added rules: (1) every session must log actions, (2) check CODEMAP.md before starting work, (3) update CODEMAP.md when files change |
+| 2026-10-28T02:52:54Z | Updated GAPS.md | GAPS.md | Rechecked gaps after backend implementation — backend/auth/workspaces/items/search/focus now complete on backend; frontend integration and UI gaps remain |
+| 2026-10-28T03:00:00Z | Wired keyboard shortcuts in AppLayout | frontend/src/components/layout/app-layout.tsx | Ctrl/Cmd+K → navigate to /app/search, Ctrl/Cmd+N → navigate to /app/projects, Escape → close panel / navigate to /app/projects |
+| 2026-10-28T03:00:00Z | Added arrow key navigation to ItemTree | frontend/src/features/items/components/item-tree.tsx | ArrowUp/Down navigate items, ArrowRight expand/go to first child, ArrowLeft collapse/go to parent, Enter select, Space toggle expand/collapse |
+| 2026-10-28T03:00:00Z | Added Convert dialog in Inbox | frontend/src/features/inbox/pages/inbox-page.tsx | Added Convert button to each inbox item with type selection dialog (project/task/note/idea) calling convert API |
+| 2026-10-28T03:00:00Z | Added Move dialog to ItemTree | frontend/src/features/items/components/move-dialog.tsx, item-tree.tsx | Added Move button to each tree row with dialog showing eligible parents (excludes self and descendants to prevent cycles) |
 | 2026-10-28T02:52:54Z | Added session rules to LOG.md | LOG.md | Added rules: (1) every session must log actions, (2) check CODEMAP.md before starting work, (3) update CODEMAP.md when files change |
 | 2026-10-28T02:52:54Z | Updated GAPS.md | GAPS.md | Rechecked gaps after backend implementation — backend/auth/workspaces/items/search/focus now complete on backend; frontend integration and UI gaps remain |
 

@@ -124,7 +124,7 @@ React 19 + TypeScript + Vite + Tailwind CSS v4 + TanStack Query + React Router +
 |---------|-------|---------|
 | **auth** | `api/auth.ts`, `hooks/use-auth.tsx`, `pages/login-page.tsx`, `pages/register-page.tsx`, `schemas/index.ts`, `types/index.ts` | Register/login/logout/session, React Hook Form + Zod validation, AuthContext |
 | **inbox** | `api/inbox.ts`, `hooks/use-inbox.ts`, `pages/inbox-page.tsx` | Quick capture, status toggle, archive/delete |
-| **items** | `api/items.ts`, `hooks/use-items.ts`, `components/item-tree.tsx`, `components/item-detail-panel.tsx`, `types/index.ts`, `schemas/index.ts`, `utils/tree.ts`, `utils/breadcrumb.ts` | Hierarchical item tree, detail panel with version concurrency, tree utilities |
+| **items** | `api/items.ts`, `hooks/use-items.ts`, `components/item-tree.tsx`, `components/item-detail-panel.tsx`, `components/move-dialog.tsx`, `types/index.ts`, `schemas/index.ts`, `utils/tree.ts`, `utils/breadcrumb.ts` | Hierarchical item tree, detail panel with version concurrency, tree utilities |
 | **projects** | `projects-page.tsx` | Projects view — tree + detail panel |
 | **focus** | `api/focus.ts`, `hooks/use-focus.ts`, `focus-page.tsx` | Focus sections with filters |
 | **search** | `api/search.ts`, `hooks/use-search.ts`, `search-page.tsx` | Debounced search, ancestor paths in results |
