@@ -88,9 +88,10 @@ edited, deleted, or command run.
 | 2026-10-28T03:00:00Z | Wired keyboard shortcuts in AppLayout | frontend/src/components/layout/app-layout.tsx | Ctrl/Cmd+K → navigate to /app/search, Ctrl/Cmd+N → navigate to /app/projects, Escape → close panel / navigate to /app/projects |
 | 2026-10-28T03:00:00Z | Added arrow key navigation to ItemTree | frontend/src/features/items/components/item-tree.tsx | ArrowUp/Down navigate items, ArrowRight expand/go to first child, ArrowLeft collapse/go to parent, Enter select, Space toggle expand/collapse |
 | 2026-10-28T03:00:00Z | Added Convert dialog in Inbox | frontend/src/features/inbox/pages/inbox-page.tsx | Added Convert button to each inbox item with type selection dialog (project/task/note/idea) calling convert API |
-| 2026-10-28T03:00:00Z | Added Move dialog to ItemTree | frontend/src/features/items/components/move-dialog.tsx, item-tree.tsx | Added Move button to each tree row with dialog showing eligible parents (excludes self and descendants to prevent cycles) |
-| 2026-10-28T02:52:54Z | Added session rules to LOG.md | LOG.md | Added rules: (1) every session must log actions, (2) check CODEMAP.md before starting work, (3) update CODEMAP.md when files change |
-| 2026-10-28T02:52:54Z | Updated GAPS.md | GAPS.md | Rechecked gaps after backend implementation — backend/auth/workspaces/items/search/focus now complete on backend; frontend integration and UI gaps remain |
+| 2026-10-28T03:00:00Z | Added Move dialog to ItemTree | frontend/src/features/items/components/move-dialog.tsx, item-tree.tsx | Added Move button to each tree row with dialog showing eligible parents (cycle-safe) |
+| 2026-10-28T03:00:00Z | Created CODEMAP.md | CODEMAP.md | Complete codebase map — all frontend/, backend/, docs/, and root files documented with purpose |
+| 2026-10-28T03:00:00Z | Updated GAPS.md | GAPS.md | Rechecked gaps after backend implementation — backend/auth/workspaces/items/search/focus now complete on backend; frontend integration and UI gaps remain |
+| 2026-10-28T03:00:00Z | Created PLAN-06.6-Backend-Optimization.md | docs/PLAN-06.6-Backend-Optimization.md | Backend optimization plan — DB indexing, Redis caching, API pagination, compression, rate limiting, observability, graceful shutdown |
 
 ---
 
