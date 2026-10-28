@@ -102,8 +102,11 @@ edited, deleted, or command run.
 | 2026-10-28T03:30:00Z | Added Convert dialog in Inbox | frontend/src/features/inbox/pages/inbox-page.tsx | Convert button with type selection dialog calling update API |
 | 2026-10-28T03:45:00Z | Wired Projects page to real API | frontend/src/features/projects/projects-page.tsx | Connected to useItems/useCreateItem/useUpdateItem/useDeleteItem/useMoveItem hooks with toast notifications |
 | 2026-10-28T03:45:00Z | Added Move button to ItemTree | frontend/src/features/items/components/item-tree.tsx | Added Move button with move-dialog for moving items between parents |
+| 2026-10-28T03:50:00Z | Wired Focus page to real API | frontend/src/features/focus/focus-page.tsx | Connected to useFocus hook with real API |
+| 2026-10-28T03:50:00Z | Wired Search page to real API | frontend/src/features/search/search-page.tsx | Connected to useSearch hook with real API |
 
 ---
+
 
 ## Rules
 
