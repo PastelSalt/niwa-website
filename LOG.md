@@ -81,6 +81,7 @@ edited, deleted, or command run.
 | 2026-10-27T13:42:57Z | Fixed Render deployment again | package.json, render.yaml | Changed root package.json scripts to use npx pnpm (works even if Render defaults to yarn), kept render.yaml rootDir: backend with npx pnpm commands |
 | 2026-10-27T13:57:08Z | Fixed Render npm EBADDEVENGINES | root/package.json, frontend/package.json, backend/package.json | Removed devEngines.packageManager and packageManager fields (npm rejects pnpm in devEngines), npx pnpm now works cleanly |
 | 2026-10-28T02:03:27Z | Fixed Render ERR_MODULE_NOT_FOUND | backend/tsconfig.json, backend/src/*.ts | Changed backend to module: Node16, moduleResolution: node16; added .js extensions to all relative ESM imports; fixed index.ts to use import instead of require; build and start now work on Render |
+| 2026-10-28T02:20:10Z | Fixed Render jsonwebtoken ESM export error | backend/src/lib/auth.ts | jsonwebtoken is CommonJS-only; replaced named ESM imports with createRequire() from node:module to load it as CJS |
 
 ---
 
