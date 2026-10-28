@@ -83,6 +83,7 @@ edited, deleted, or command run.
 | 2026-10-28T02:03:27Z | Fixed Render ERR_MODULE_NOT_FOUND | backend/tsconfig.json, backend/src/*.ts | Changed backend to module: Node16, moduleResolution: node16; added .js extensions to all relative ESM imports; fixed index.ts to use import instead of require; build and start now work on Render |
 | 2026-10-28T02:20:10Z | Fixed Render jsonwebtoken ESM export error | backend/src/lib/auth.ts | jsonwebtoken is CommonJS-only; replaced named ESM imports with createRequire() from node:module to load it as CJS |
 | 2026-10-28T02:44:07Z | Moved PLAN files to docs/ folder | docs/PLAN-*.md | Moved all 10 PLAN-*.md files from root into docs/ subdirectory via git mv (history preserved) |
+| 2026-10-28T02:48:31Z | Created CODEMAP.md | CODEMAP.md | Complete codebase map — all frontend/, backend/, docs/, and root files documented with purpose |
 
 ---
 
