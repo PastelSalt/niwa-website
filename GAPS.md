@@ -340,7 +340,7 @@ These are explicitly excluded from MVP and should NOT be implemented yet:
 | Priority | Gap | Effort | Blocker for MVP |
 |----------|-----|--------|-----------------|
 | High | Frontend auth API integration (login/register call backend) | Done | Yes — users can now authenticate |
-| High | Workspace UI (create/select workspace) | Medium | Yes — items hardcode workspace_123 |
+| High | Workspace UI (create/select workspace) | Medium | Partial — items now use workspaceId from auth, but no workspace selector UI |
 | High | Inbox/Focus/Search real API integration | Done | Yes — features now call real API |
 | High | Backend deployment to Render with env vars | Medium | Yes — no live API for frontend to call |
 | Medium | Drag-and-drop / keyboard reorder | Medium | No (accessible fallback needed) |

@@ -104,6 +104,8 @@ edited, deleted, or command run.
 | 2026-10-28T03:45:00Z | Added Move button to ItemTree | frontend/src/features/items/components/item-tree.tsx | Added Move button with move-dialog for moving items between parents |
 | 2026-10-28T03:50:00Z | Wired Focus page to real API | frontend/src/features/focus/focus-page.tsx | Connected to useFocus hook with real API |
 | 2026-10-28T03:50:00Z | Wired Search page to real API | frontend/src/features/search/search-page.tsx | Connected to useSearch hook with real API |
+| 2026-10-28T03:55:00Z | Added workspaceId to User type & backend responses | backend/src/controllers/auth.controller.ts, frontend/src/features/auth/types/index.ts | Backend returns workspaceId in login/me/register; frontend User type includes workspaceId |
+| 2026-10-28T03:55:00Z | Use real workspaceId instead of hardcoded value | frontend/src/features/inbox/pages/inbox-page.tsx, frontend/src/features/projects/projects-page.tsx | Uses state.user.workspaceId instead of hardcoded 'workspace_123' |
 
 ---
 
