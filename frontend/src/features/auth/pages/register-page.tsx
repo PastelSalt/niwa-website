@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { RegisterSchema } from "@/features/auth/schemas";
 import type { RegisterInput } from "@/features/auth/types";
+import { toastSuccess } from "@/lib/toast";
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export function RegisterPage() {
   const onSubmit = async (data: RegisterInput) => {
     try {
       await register(data.email, data.password, data.name);
+      toastSuccess("Account created!");
       navigate("/app", { replace: true });
     } catch {
       // Error is already set by the auth hook

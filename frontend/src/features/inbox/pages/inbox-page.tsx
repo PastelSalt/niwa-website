@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { Plus, Edit2, Trash2, Folder } from "lucide-react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { INBOX_QUERY_KEY } from "@/features/inbox/hooks/use-inbox";
+import { useItems, useCreateItem, useUpdateItem, useDeleteItem } from "@/features/items/hooks/use-items";
 import type { Item } from "@/features/items/types";
 import { cn } from "@/lib/utils";
+import { toastSuccess, toastError } from "@/lib/toast";
 
 export function InboxPage() {
   const [captureOpen, setCaptureOpen] = useState(false);
@@ -13,116 +13,86 @@ export function InboxPage() {
   const [captureError, setCaptureError] = useState<string | null>(null);
   const [convertOpen, setConvertOpen] = useState(false);
   const [convertItemId, setConvertItemId] = useState<string | null>(null);
-  const [convertType, setConvertType] = useState<Item["type"]>("project");
+  const [convertType, setConvertType] = useState<Item["type"]>("task");
 
-  const queryClient = useQueryClient();
+  const { data, isLoading, error } = useItems();
+  const createMutation = useCreateItem();
+  const updateMutation = useUpdateItem();
+  const deleteMutation = useDeleteItem();
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: [INBOX_QUERY_KEY],
-    queryFn: () =>
-      fetch("/api/v1/inbox").then((res) => res.json()) as Promise<{ items: Item[] }>,
-  });
-
-  const createMutation = useMutation({
-    mutationFn: (input: { title: string }) =>
-      fetch("/api/v1/inbox", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ workspaceId: "workspace_123", title: input.title }),
-        credentials: "include",
-      }).then((res) => res.json()),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [INBOX_QUERY_KEY] });
-      setCaptureTitle("");
-      setCaptureOpen(false);
-      setCaptureError(null);
-    },
-    onError: (err: unknown) => {
-      setCaptureError(err instanceof Error ? err.message : "Failed to create item");
-    },
-  });
-
-  const updateMutation = useMutation({
-    mutationFn: ({
-      itemId,
-      input,
-    }: {
-      itemId: string;
-      input: { title?: string; description?: string; status?: Item["status"] };
-    }) =>
-      fetch(`/api/v1/inbox/${itemId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
-        credentials: "include",
-      }).then((res) => res.json()),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [INBOX_QUERY_KEY] });
-    },
-    onError: (err: unknown) => {
-      setCaptureError(err instanceof Error ? err.message : "Failed to update item");
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (itemId: string) =>
-      fetch(`/api/v1/inbox/${itemId}`, {
-        method: "DELETE",
-        credentials: "include",
-      }).then((res) => res.json()),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [INBOX_QUERY_KEY] });
-    },
-    onError: (err: unknown) => {
-      setCaptureError(err instanceof Error ? err.message : "Failed to delete item");
-    },
-  });
-
-  const convertMutation = useMutation({
-    mutationFn: ({ itemId, type }: { itemId: string; type: Item["type"] }) =>
-      fetch(`/api/v1/inbox/${itemId}/convert`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type }),
-        credentials: "include",
-      }).then((res) => res.json()),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [INBOX_QUERY_KEY] });
-      setConvertOpen(false);
-      setConvertItemId(null);
-    },
-    onError: (err: unknown) => {
-      setCaptureError(err instanceof Error ? err.message : "Failed to convert item");
-    },
-  });
-
-  const items: Item[] = Array.isArray(data) ? data : data?.items ?? [];
+  const items: Item[] = Array.isArray(data) ? data.filter((i) => !i.parentId) : [];
 
   const handleCaptureSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!captureTitle.trim()) return;
     setCaptureError(null);
-    createMutation.mutate({ title: captureTitle.trim() });
+    createMutation.mutate(
+      {
+        workspaceId: "workspace_123",
+        parentId: null,
+        title: captureTitle.trim(),
+      },
+      {
+        onSuccess: () => {
+          toastSuccess("Item created");
+          setCaptureTitle("");
+          setCaptureOpen(false);
+        },
+        onError: (err) => {
+          toastError("Failed to create item", err instanceof Error ? err.message : undefined);
+        },
+      }
+    );
   };
 
   const handleToggleStatus = (item: Item) => {
     const nextStatus: Item["status"] =
       item.status === "completed" ? "not_started" : "completed";
-    updateMutation.mutate({
-      itemId: item.id,
-      input: { status: nextStatus },
-    });
+    updateMutation.mutate(
+      {
+        itemId: item.id,
+        input: { status: nextStatus, version: item.version },
+      },
+      {
+        onSuccess: () => toastSuccess("Item updated"),
+        onError: (err) => toastError("Failed to update item", err instanceof Error ? err.message : undefined),
+      }
+    );
   };
 
   const handleDelete = (itemId: string) => {
     if (!window.confirm("Archive this item?")) return;
-    deleteMutation.mutate(itemId);
+    deleteMutation.mutate(
+      itemId,
+      {
+        onSuccess: () => toastSuccess("Item archived"),
+        onError: (err) => toastError("Failed to archive item", err instanceof Error ? err.message : undefined),
+      }
+    );
   };
 
   const handleConvert = (item: Item) => {
     setConvertItemId(item.id);
     setConvertType(item.type === "project" ? "task" : "project");
     setConvertOpen(true);
+  };
+
+  const handleConvertSubmit = () => {
+    if (!convertItemId) return;
+    updateMutation.mutate(
+      {
+        itemId: convertItemId,
+        input: { type: convertType, version: items.find((i) => i.id === convertItemId)?.version || 1 },
+      },
+      {
+        onSuccess: () => {
+          toastSuccess("Item converted");
+          setConvertOpen(false);
+          setConvertItemId(null);
+        },
+        onError: (err) => toastError("Failed to convert item", err instanceof Error ? err.message : undefined),
+      }
+    );
   };
 
   if (isLoading) {
@@ -279,13 +249,11 @@ export function InboxPage() {
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  convertMutation.mutate({ itemId: convertItemId!, type: convertType });
-                }}
+                onClick={handleConvertSubmit}
                 className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-sage-700 disabled:opacity-50"
-                disabled={convertMutation.isPending}
+                disabled={updateMutation.isPending}
               >
-                {convertMutation.isPending ? "Converting…" : "Convert"}
+                {updateMutation.isPending ? "Converting…" : "Convert"}
               </button>
             </div>
           </div>

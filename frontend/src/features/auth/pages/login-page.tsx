@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { LoginSchema } from "@/features/auth/schemas";
 import type { LoginInput } from "@/features/auth/types";
+import { toastSuccess } from "@/lib/toast";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export function LoginPage() {
   const onSubmit = async (data: LoginInput) => {
     try {
       await login(data.email, data.password);
+      toastSuccess("Welcome back!");
       navigate("/app", { replace: true });
     } catch {
       // Error is already set by the auth hook
