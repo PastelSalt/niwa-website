@@ -93,6 +93,13 @@ edited, deleted, or command run.
 | 2026-10-28T03:00:00Z | Updated GAPS.md | GAPS.md | Rechecked gaps after backend implementation — backend/auth/workspaces/items/search/focus now complete on backend; frontend integration and UI gaps remain |
 | 2026-10-28T03:00:00Z | Created PLAN-06.6-Backend-Optimization.md | docs/PLAN-06.6-Backend-Optimization.md | Backend optimization plan — DB indexing, Redis caching, API pagination, compression, rate limiting, observability, graceful shutdown |
 | 2026-10-28T03:00:00Z | Created PLAN-06.7-Frontend-Optimization.md | docs/PLAN-06.7-Frontend-Optimization.md | Frontend optimization plan — auth/workspace/inbox/focus/search API integration, toast notifications, drag-and-drop reordering, tree virtualization, accessibility, error handling |
+| 2026-10-28T03:30:00Z | Installed sonner toast library | frontend/package.json, frontend/pnpm-lock.yaml | Added sonner 2.0.8 for toast notifications |
+| 2026-10-28T03:30:00Z | Created toast utility | frontend/src/lib/toast.ts | toastSuccess, toastError, toastInfo, toastWarning helpers |
+| 2026-10-28T03:30:00Z | Added Toaster to main.tsx | frontend/src/main.tsx | Added Toaster component from sonner at top-right position |
+| 2026-10-28T03:30:00Z | Wired login page to auth API | frontend/src/features/auth/pages/login-page.tsx | Calls login API with toast success/error feedback |
+| 2026-10-28T03:30:00Z | Wired register page to auth API | frontend/src/features/auth/pages/register-page.tsx | Calls register API with toast success/error feedback |
+| 2026-10-28T03:30:00Z | Wired Inbox page to real items API | frontend/src/features/inbox/pages/inbox-page.tsx | Uses useItems/useCreateItem/useUpdateItem/useDeleteItem hooks instead of mock fetch |
+| 2026-10-28T03:30:00Z | Added Convert dialog in Inbox | frontend/src/features/inbox/pages/inbox-page.tsx | Convert button with type selection dialog calling update API |
 
 ---
 
