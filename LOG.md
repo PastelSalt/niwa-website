@@ -84,6 +84,24 @@ edited, deleted, or command run.
 | 2026-10-28T02:20:10Z | Fixed Render jsonwebtoken ESM export error | backend/src/lib/auth.ts | jsonwebtoken is CommonJS-only; replaced named ESM imports with createRequire() from node:module to load it as CJS |
 | 2026-10-28T02:44:07Z | Moved PLAN files to docs/ folder | docs/PLAN-*.md | Moved all 10 PLAN-*.md files from root into docs/ subdirectory via git mv (history preserved) |
 | 2026-10-28T02:48:31Z | Created CODEMAP.md | CODEMAP.md | Complete codebase map — all frontend/, backend/, docs/, and root files documented with purpose |
+| 2026-10-28T02:52:54Z | Added session rules to LOG.md | LOG.md | Added rules: (1) every session must log actions, (2) check CODEMAP.md before starting work, (3) update CODEMAP.md when files change |
+| 2026-10-28T02:52:54Z | Updated GAPS.md | GAPS.md | Rechecked gaps after backend implementation — backend/auth/workspaces/items/search/focus now complete on backend; frontend integration and UI gaps remain |
+
+---
+
+## Rules
+
+1. **LOG.md**: Every session must append new entries to this LOG.md file before concluding work — every file created, edited, deleted, or command run must be logged.
+2. **CODEMAP.md**: Before starting work, check CODEMAP.md to understand the current codebase structure. After creating, editing, or deleting any file, update CODEMAP.md to reflect the change (add new files, remove deleted files, update descriptions if purpose changes).
+3. **GAPS.md**: After completing a milestone or significant feature, review GAPS.md and update any items that are no longer gaps.
+
+---
+
+## Rules
+
+1. **LOG.md**: Every session must append new entries to this LOG.md file before concluding work — every file created, edited, deleted, or command run must be logged.
+2. **CODEMAP.md**: Before starting work, check CODEMAP.md to understand the current codebase structure. After creating, editing, or deleting any file, update CODEMAP.md to reflect the change (add new files, remove deleted files, update descriptions if purpose changes).
+3. **GAPS.md**: After completing a milestone or significant feature, review GAPS.md and update any items that are no longer gaps.
 
 ---
 

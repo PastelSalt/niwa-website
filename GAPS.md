@@ -1,71 +1,77 @@
 # GAPS.md — Missing Features & Known Gaps
 
-Analysis of the NIWA website codebase against the Project Specification. This file tracks all gaps, missing features, and known limitations that remain after Milestone 6.
+Analysis of the NIWA website codebase against the Project Specification. This file tracks all gaps, missing features, and known limitations.
 
-## 1. Backend (Critical Gap)
-
-The backend is a **separate service not included in this repository**. Per spec Section 1.3 and 10, the React app must not connect directly to MongoDB. All frontend API calls currently target `http://localhost:5173/api/v1/*` via mock fetch in tests, or the real `VITE_API_BASE_URL` which is not yet connected to a running backend.
-
-**Missing:**
-- Node.js/Express/MongoDB API server (endpoints in Section 10)
-- MongoDB Atlas database (connection file `src/lib/db.ts` exists for server-side use but no server routes consume it)
-- OpenAPI specification (Section 4.3, 10.5, 17.3)
-- Authentication backend (register/login/logout/me/refresh)
-- Items backend with hierarchy validation (no cycles, valid parent-child)
-- Search and Focus backend endpoints
-- Workspace backend
-
-**Files affected:** `src/lib/db.ts` (exists, unused by any server route)
+**Current state:** Milestone 0.5 complete — frontend (React/Vite) migrated to `frontend/`, backend (Node/Express/MongoDB) implemented in `backend/`, deployed on Vercel (frontend) and configured for Render (backend). 62 unit/component/integration tests passing.
 
 ---
 
-## 2. Authentication (Partial)
+## 1. Backend (COMPLETE)
 
-**Implemented:** Login/Register page stubs, ProtectedRoute guard, AuthProvider context, theme toggle, logout button.
+**Implemented:** Node.js/Express/MongoDB API in `backend/` with all spec endpoints:
+- Auth: register, login, logout, me, refresh (JWT access + refresh HttpOnly cookies)
+- Workspaces: full CRUD with ownership enforcement
+- Items: CRUD, children, tree, move (cycle detection), archive, restore (version concurrency)
+- Search: full-text search at any depth
+- Focus: aggregated sections (In Progress, High Priority, Overdue, Upcoming, Recently Updated)
+- OpenAPI 3.0 spec at `backend/openapi.yaml`
+- MongoDB connection with cached singleton via `globalThis`
+- Render deployment config at `render.yaml`
+
+**Remaining:** Backend not yet deployed to Render (environment variables need to be set in Render dashboard).
+
+---
+
+## 2. Authentication (Partial — Backend Complete, Frontend Integration Pending)
+
+**Backend implemented:** register/login/logout/me/refresh with JWT access (15min) + refresh (7day) HttpOnly cookies, bcryptjs password hashing.
+
+**Frontend:** Login/Register page stubs, ProtectedRoute guard, AuthProvider context. API integration not yet wired — login/register navigate to `/app` without calling the backend API.
 
 **Missing:**
-- Real API integration (login/register currently navigate to `/app` on submit without calling an API)
-- HttpOnly cookie handling (api-client sends `credentials: "include"` but no backend sets cookies)
-- CSRF protection (spec 7.1, 12)
-- Session refresh logic (refresh endpoint defined but not wired)
+- Frontend auth API integration (login/register call backend API)
+- CSRF protection (spec 7.1, 12 — SameSite=None cookies mitigate)
 - Password recovery flow (spec 7.1)
-- Account information view (spec 7.1)
 - "View account information" page (settings/account is a stub)
 
-**Files affected:** `src/features/auth/pages/login-page.tsx`, `register-page.tsx`, `src/features/auth/api/auth.ts`, `src/features/auth/hooks/use-auth.tsx`
+**Files affected:** `src/features/auth/pages/login-page.tsx`, `register-page.tsx`, `src/features/auth/hooks/use-auth.tsx`
 
 ---
 
-## 3. Workspaces (Not Implemented)
+## 3. Workspaces (Partial — Backend Complete, Frontend UI Stub)
 
-Per spec Section 10.2, workspaces have full CRUD endpoints.
+**Backend implemented:** full CRUD with ownership enforcement.
+
+**Frontend:** `settings/account.tsx` stub only. Items hardcode `workspace_123`.
 
 **Missing:**
 - Workspace list/create/edit/delete UI
-- Workspace selector (multiple workspaces not supported; hardcoded `"workspace_123"`)
-- Personal workspace creation flow (spec 15 MVP)
+- Workspace selector
+- Personal workspace creation flow wired to UI
 
-**Files affected:** No workspace feature directory exists.
+**Files affected:** `src/features/settings/account-page.tsx`
 
 ---
 
-## 4. Hierarchical Items (Partial)
+## 4. Hierarchical Items (Partial — Backend Complete, Frontend Partial)
 
-**Implemented:** ItemTree component (expand/collapse, inline rename, add child, delete), ItemDetailPanel (view/edit/save), API hooks (create/update/delete/children/tree/move/archive/restore), tree utilities (buildTree, findItem, toggleExpansion, buildBreadcrumb).
+**Backend implemented:** full item CRUD with version concurrency, cycle detection, parent-child validation, archive/restore, tree building.
+
+**Frontend:** ItemTree component (expand/collapse, inline rename, add child, delete), ItemDetailPanel (view/edit/save), tree utilities (buildTree, findItem, toggleExpansion, buildBreadcrumb).
 
 **Missing:**
-- Drag-and-drop reordering (spec 7.3 says drag-and-drop may be provided but equivalent accessible actions required — keyboard/menu reorder not implemented)
-- Move items to another parent via UI (API exists, UI does not expose it)
-- Reorder siblings via UI (API exists, UI does not expose it)
+- Drag-and-drop reordering (accessible keyboard/menu fallback not implemented)
+- Move items to another parent via UI (API exists, UI button missing)
+- Reorder siblings via UI (API exists, UI missing)
 - Item counts and completion summaries in tree (spec 7.3)
-- "Empty branches communicate no children" (partial — shows "No items yet" only at root level)
-- Loading and error states in tree (partial — shows loading at page level only)
+- "Empty branches communicate no children" (shows "No items yet" only at root level)
+- Loading and error states in tree (shows at page level only)
 - Large-tree virtualization (spec 11 performance)
-- Partial tree rendering / load descendants on demand (spec 7.3, 11)
-- Cancel obsolete requests (api-client has AbortController but not wired to tree expansion)
-- Breadcrumb navigation in UI (utility exists, not displayed anywhere)
+- Partial tree rendering / load descendants on demand (loads all items at once)
+- Cancel obsolete requests (AbortController not wired to tree expansion)
+- Breadcrumb navigation in UI (utility exists, not displayed)
 - Navigate to ancestors from item (spec 7.3, 7.4)
-- Open deeply nested items from search results (search page shows ancestor path but doesn't navigate)
+- Open deeply nested items from search results (search shows ancestor path but doesn't navigate)
 
 **Files affected:** `src/features/items/components/item-tree.tsx`, `src/features/items/components/item-detail-panel.tsx`, `src/features/items/utils/tree.ts`, `src/features/items/utils/breadcrumb.ts`
 
@@ -81,53 +87,57 @@ Per spec Section 10.2, workspaces have full CRUD endpoints.
 - Creation date / last updated / completion date display (partial — shows created/updated/completed)
 - Autosave with clear feedback (spec 7.4 — optional)
 - Version conflict UI feedback when server rejects stale version (spec 7.4)
-- Clear way to close panel and return to prior context (exists — close button)
 
 **Files affected:** `src/features/items/components/item-detail-panel.tsx`
 
 ---
 
-## 6. Inbox (Partial)
+## 6. Inbox (Partial — Backend Complete, Frontend Stub)
 
-**Implemented:** Quick capture form, status toggle, archive/delete, tag chips, loading/empty states.
+**Backend implemented:** inbox endpoints (create, update, delete, convert, move-to-hierarchy).
+
+**Frontend:** Quick capture form, status toggle, archive/delete, tag chips, loading/empty states. API not connected.
 
 **Missing:**
-- Real API integration (uses mock fetch in tests; page not connected to backend)
+- Real API integration (page not connected to backend)
 - Add description later (edit via detail panel only)
 - Convert idea to project/task (API exists, UI button missing)
 - Move item into hierarchy (API exists, UI button missing)
 - Keyboard focus preserved after creating items (spec 7.2)
-- Enter submits simple title (exists in capture form)
 
 **Files affected:** `src/features/inbox/pages/inbox-page.tsx`, `src/features/inbox/hooks/use-inbox.ts`
 
 ---
 
-## 7. Focus View (Partial)
+## 7. Focus View (Partial — Backend Complete, Frontend Stub)
 
-**Implemented:** Page stub with 5 section configs (In Progress, High Priority, Overdue, Upcoming, Recently Updated), filter state.
+**Backend implemented:** focus endpoints with sections (In Progress, High Priority, Overdue, Upcoming, Recently Updated) and filters (project, status, priority, tag).
+
+**Frontend:** Page stub with 5 section configs, filter state (not applied to API).
 
 **Missing:**
-- Real API integration (uses mock fetch)
-- Filter by project/status/priority/tag (state exists, not applied to API calls)
-- Change an item's status (not implemented)
-- Open item's full hierarchy from Focus (not implemented)
+- Real API integration (uses mock data)
+- Filter by project/status/priority/tag applied to API calls
+- Change an item's status
+- Open item's full hierarchy from Focus
 - Navigate back to original project context (spec 7.5)
-- Only display sections with useful content (logic exists, data comes from mock)
+- Only display sections with useful content
 
 **Files affected:** `src/features/focus/focus-page.tsx`, `src/features/focus/hooks/use-focus.ts`
 
 ---
 
-## 8. Global Search (Partial)
+## 8. Global Search (Partial — Backend Complete, Frontend Stub)
 
-**Implemented:** Debounced input (300ms), results display with title/type/status/priority/project/ancestor path/excerpt, loading/empty/error states, Escape to clear.
+**Backend implemented:** search endpoint with full-text search at any nesting depth.
+
+**Frontend:** Debounced input (300ms), results display with title/type/status/priority/project/ancestor path/excerpt, loading/empty/error states, Escape to clear. API not connected.
 
 **Missing:**
-- Real API integration (uses mock fetch)
+- Real API integration
 - Keyboard navigation of results (spec 7.6)
 - Open result directly in hierarchy (not implemented)
-- Cancel/ignore stale requests (api-client supports AbortController, not wired)
+- Cancel/ignore stale requests (AbortController not wired)
 - Search within current project (spec 7.3)
 
 **Files affected:** `src/features/search/search-page.tsx`, `src/features/search/hooks/use-search.ts`
@@ -149,8 +159,6 @@ Per spec 7.7, tags should be addable/removable/reusable.
 
 ## 10. Sorting and Filtering (Partial)
 
-**Implemented:** Filter state in Focus page; sort/filter options defined in spec but not wired.
-
 **Missing:**
 - Manual order, title, last updated, deadline, priority sorting (spec 7.8)
 - Status/priority/tags/deadline/item-type filters in projects/inbox (Focus has state only)
@@ -161,8 +169,6 @@ Per spec 7.7, tags should be addable/removable/reusable.
 ---
 
 ## 11. Notifications and Feedback (Minimal)
-
-**Implemented:** Error banners in auth pages, save states in detail panel.
 
 **Missing:**
 - Success feedback after important operations (spec 7.9)
@@ -184,7 +190,6 @@ Per spec 7.7, tags should be addable/removable/reusable.
 - `/app/projects/:itemId` deep link loads correct item (route exists but item selection not persisted via URL)
 - Refreshing item URL must not lose selected item (not implemented)
 - Invalid/deleted item IDs show not-found state (not implemented)
-- Routes should not encode sensitive information (OK)
 
 **Files affected:** `src/app/router.tsx`, `src/features/projects/projects-page.tsx`
 
@@ -192,11 +197,11 @@ Per spec 7.7, tags should be addable/removable/reusable.
 
 ## 13. Theme and Appearance (Partial)
 
-**Implemented:** Light/dark theme toggle, CSS tokens, `data-theme` attribute, localStorage persistence.
+**Implemented:** Light/dark theme toggle, CSS tokens (sage green, warm cream, cherry-blossom pink, charcoal, gray-green), `data-theme` attribute, localStorage persistence.
 
 **Missing:**
 - Settings/appearance page (stub only)
-- System theme detection (implemented in ThemeProvider but not exposed in UI)
+- System theme detection exposed in UI (implemented in ThemeProvider but no UI toggle)
 
 **Files affected:** `src/features/settings/appearance-page.tsx` (stub)
 
@@ -256,6 +261,7 @@ Per spec Section 11.
 - Pagination for large lists
 - Cache loaded children (TanStack Query caches but tree doesn't leverage it for partial rendering)
 - Load root items first, fetch children on expand (tree loads all items at once via `useItems`)
+- Cancel obsolete requests on branch collapse
 
 **Files affected:** `src/features/items/components/item-tree.tsx`, `src/features/items/hooks/use-items.ts`
 
@@ -263,14 +269,14 @@ Per spec Section 11.
 
 ## 18. Testing Gaps
 
-**Implemented:** 62 unit/component/integration tests (10 files).
+**Implemented:** 62 unit/component/integration tests (10 files), all passing.
 
 **Missing:**
-- Playwright E2E tests not run against live server (scaffolding only, no test execution)
+- Playwright E2E tests not run against live server (scaffolding only)
 - Integration tests against real backend (mocked apiClient only)
 - Unauthorized session handling tests
 - Stale search response tests
-- Query cache invalidation after mutation tests (hooks have logic, not tested end-to-end)
+- Query cache invalidation after mutation tests
 
 **Files affected:** `src/e2e/critical-journeys.spec.ts` (scaffolding only)
 
@@ -278,37 +284,32 @@ Per spec Section 11.
 
 ## 19. Production and Deployment (Partial)
 
-**Implemented:** Vercel deployment, vercel.json SPA fallback, VITE_API_BASE_URL env var.
+**Implemented:** Frontend deployed on Vercel (`https://niwa-website-six.vercel.app`), vercel.json SPA fallback, VITE_API_BASE_URL env var. Backend configured on Render (`render.yaml`) but not yet deployed with environment variables.
 
 **Missing:**
-- `VITE_API_BASE_URL` set to placeholder `https://api.example.com/api/v1` (must be replaced with actual API URL)
+- `VITE_API_BASE_URL` set to actual backend URL in Vercel (currently placeholder)
+- Backend environment variables configured in Render dashboard (MONGODB_URI, JWT_ACCESS_SECRET, JWT_REFRESH_SECRET, FRONTEND_URL, etc.)
 - CI pipeline (GitHub Actions not configured — spec 11.3)
 - Error monitoring configuration (spec 11.2)
 - Production environment variable documentation (partial in README)
-- HTTPS configuration (Vercel handles automatically)
-- Trusted backend origins / CORS (backend responsibility)
 
-**Files affected:** `vercel.json`, `.env.local.example`, README.md
+**Files affected:** `vercel.json`, `.env.local.example`, README.md, `backend/render.yaml`
 
 ---
 
 ## 20. Documentation (Partial)
 
-**Implemented:** README.md with setup, features, architecture, testing, deployment.
+**Implemented:** README.md with setup, features, architecture, testing, deployment. CODEMAP.md with complete codebase map. OpenAPI spec at `backend/openapi.yaml`. LOG.md with session action log.
 
 **Missing:**
-- OpenAPI documentation (spec 4.3, 10.5, 17.3)
 - Architecture decision records (spec 11.18)
-- API documentation for frontend contracts
 - Local setup instructions (partial in README)
 - Testing instructions (partial in README)
-- List of implemented features (partial in README)
-- List of known limitations (this GAPS.md addresses)
 - Roadmap for future development (partial in README)
 - Screenshots of website (spec 20)
 - Live demo link (Vercel URL in README)
 
-**Files affected:** README.md (no OpenAPI spec or ADR files exist)
+**Files affected:** README.md (OpenAPI spec exists at `backend/openapi.yaml`)
 
 ---
 
@@ -336,29 +337,15 @@ These are explicitly excluded from MVP and should NOT be implemented yet:
 
 | Priority | Gap | Effort | Blocker for MVP |
 |----------|-----|--------|-----------------|
-| Critical | Backend API server | High | Yes — frontend cannot function without it |
-| High | Real API integration (all features use mocks) | High | Yes |
-| High | Workspace CRUD | Medium | Yes — items hardcode workspace_123 |
-| High | Drag-and-drop / keyboard reorder | Medium | No (accessible fallback needed) |
-| High | Move items between parents | Medium | No (API exists, UI missing) |
-| Medium | Focus/Inbox/Search real integration | Medium | Yes |
+| High | Frontend auth API integration (login/register call backend) | Medium | Yes — users cannot authenticate |
+| High | Workspace UI (create/select workspace) | Medium | Yes — items hardcode workspace_123 |
+| High | Inbox/Focus/Search real API integration | Medium | Yes — features use mock data |
+| High | Backend deployment to Render with env vars | Medium | Yes — no live API for frontend to call |
+| Medium | Drag-and-drop / keyboard reorder | Medium | No (accessible fallback needed) |
+| Medium | Move items between parents via UI | Medium | No (API exists, UI missing) |
 | Medium | Notifications/toast system | Low | No |
 | Medium | Accessibility audit | Medium | No |
 | Medium | Large-tree virtualization | Medium | No |
-| Low | E2E test execution | Low | No |
-| Low | OpenAPI documentation | Medium | No (post-MVP) |
-| Low | CI pipeline | Low | No |
-
----
-
-## 23. Files Created in This Project
-
-**Planning:** LOG.md, PLAN-0.5-GitHub-Vercel-MongoDB.md, PLAN-01 through PLAN-07, GAPS.md
-
-**Source:** src/app/, src/components/, src/features/, src/lib/, src/styles/, src/test/, src/e2e/
-
-**Config:** package.json, pnpm-lock.yaml, tsconfig.json, tsconfig.node.json, vite.config.ts, postcss.config.mjs, .prettierrc, eslint.config.js, vercel.json, playwright.config.ts
-
-**Docs:** README.md, .env.local.example
-
-**Gitignored (not committed):** .env.local, node_modules/, dist/, .vercel/
+| Low | E2E test execution against live server | Low | No |
+| Low | CI pipeline (GitHub Actions) | Low | No |
+| Low | Error monitoring | Low | No |
