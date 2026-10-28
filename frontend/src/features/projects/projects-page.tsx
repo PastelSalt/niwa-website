@@ -5,16 +5,18 @@ import { ItemTree } from "@/features/items/components/item-tree";
 import { DetailPanel } from "@/components/layout/detail-panel";
 import type { Item } from "@/features/items/types";
 import { useItems } from "@/features/items/hooks/use-items";
-import { useCreateItem, useDeleteItem } from "@/features/items/hooks/use-items";
+import { useCreateItem, useUpdateItem, useDeleteItem, useMoveItem } from "@/features/items/hooks/use-items";
+import { toastSuccess, toastError } from "@/lib/toast";
 
 export function ProjectsPage() {
-  const [items, setItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [open, setOpen] = useState(false);
 
   const { data, isLoading } = useItems();
   const createMutation = useCreateItem();
+  const updateMutation = useUpdateItem();
   const deleteMutation = useDeleteItem();
+  const moveMutation = useMoveItem();
 
   if (isLoading) {
     return (
@@ -24,7 +26,7 @@ export function ProjectsPage() {
     );
   }
 
-  const allItems = data ?? items;
+  const allItems: Item[] = Array.isArray(data) ? data.filter((i) => !i.parentId) : [];
 
   const handleItemSelect = useCallback((item: Item) => {
     setSelectedItem(item);
@@ -35,31 +37,81 @@ export function ProjectsPage() {
     const title = window.prompt("Item title:");
     if (!title) return;
     createMutation.mutate(
-      { workspaceId: "workspace_123", parentId, title },
       {
-        onSuccess: (res) => {
-          setItems((prev) => [...prev, res.item]);
+        workspaceId: "workspace_123",
+        parentId,
+        title,
+      },
+      {
+        onSuccess: () => {
+          toastSuccess("Item created");
+        },
+        onError: (err) => {
+          toastError("Failed to create item", err instanceof Error ? err.message : undefined);
         },
       }
     );
   }, [createMutation]);
 
   const handleItemUpdate = useCallback((item: Item) => {
-    setItems((prev) => prev.map((i) => (i.id === item.id ? item : i)));
-    if (selectedItem?.id === item.id) setSelectedItem(item);
-  }, [selectedItem?.id]);
+    updateMutation.mutate(
+      {
+        itemId: item.id,
+        input: { ...item, version: item.version },
+      },
+      {
+        onSuccess: (res) => {
+          toastSuccess("Item updated");
+          if (selectedItem?.id === item.id) setSelectedItem(res.item);
+        },
+        onError: (err) => {
+          toastError("Failed to update item", err instanceof Error ? err.message : undefined);
+        },
+      }
+    );
+  }, [selectedItem?.id, updateMutation]);
 
   const handleItemDelete = useCallback((itemId: string) => {
-    deleteMutation.mutate(itemId, {
-      onSuccess: () => {
-        setItems((prev) => prev.filter((i) => i.id !== itemId));
-        if (selectedItem?.id === itemId) {
-          setSelectedItem(null);
-          setOpen(false);
-        }
-      },
-    });
+    if (!window.confirm("Archive this item?")) return;
+    deleteMutation.mutate(
+      itemId,
+      {
+        onSuccess: () => {
+          toastSuccess("Item archived");
+          if (selectedItem?.id === itemId) {
+            setSelectedItem(null);
+            setOpen(false);
+          }
+        },
+        onError: (err) => {
+          toastError("Failed to archive item", err instanceof Error ? err.message : undefined);
+        },
+      }
+    );
   }, [deleteMutation, selectedItem?.id]);
+
+  const handleItemMove = useCallback((itemId: string, parentId: string | null) => {
+    const node = allItems.find((i) => i.id === itemId);
+    if (!node) return;
+    moveMutation.mutate(
+      {
+        itemId,
+        input: {
+          parentId,
+          position: 0,
+          version: node.version,
+        },
+      },
+      {
+        onSuccess: () => {
+          toastSuccess("Item moved");
+        },
+        onError: (err) => {
+          toastError("Failed to move item", err instanceof Error ? err.message : undefined);
+        },
+      }
+    );
+  }, [moveMutation, allItems]);
 
   return (
     <div className="flex h-full flex-col min-w-0">
@@ -79,6 +131,8 @@ export function ProjectsPage() {
             onItemSelect={handleItemSelect}
             onItemCreate={handleItemCreate}
             onItemUpdate={handleItemUpdate}
+            onItemDelete={handleItemDelete}
+            onItemMove={handleItemMove}
           />
         </div>
         <DetailPanel

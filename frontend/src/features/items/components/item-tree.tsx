@@ -18,6 +18,7 @@ interface TreeProps {
   onItemCreate?: (parentId: string | null) => void;
   onItemUpdate?: (item: Item) => void;
   onItemDelete?: (itemId: string) => void;
+  onItemMove?: (itemId: string, parentId: string | null) => void;
 }
 
 export function ItemTree({
