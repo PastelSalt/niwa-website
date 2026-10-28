@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Search, X, ArrowRight, Folder, FileText, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSearch } from "@/features/search/hooks/use-search";
 import type { SearchResult } from "@/features/search/api/search";
 
 export function SearchPage() {
@@ -18,14 +19,7 @@ export function SearchPage() {
     return () => clearTimeout(timeout);
   }, [query]);
 
-  const { data: results, isLoading, error } = useQuery({
-    queryKey: ["search", debouncedQuery],
-    queryFn: () =>
-      fetch(`/api/v1/search?q=${encodeURIComponent(debouncedQuery)}`, {
-        credentials: "include",
-      }).then((res) => res.json()) as Promise<{ results: SearchResult[] }>,
-    enabled: debouncedQuery.length > 0,
-  });
+  const { data: results, isLoading, error } = useQuery(useSearch(debouncedQuery));
 
   const handleClear = () => {
     setQuery("");
@@ -38,7 +32,7 @@ export function SearchPage() {
     }
   };
 
-  const searchResults: SearchResult[] = Array.isArray(results) ? results : results?.results ?? [];
+  const searchResults: SearchResult[] = Array.isArray(results) ? results : [];
 
   if (isLoading && debouncedQuery.length > 0) {
     return (
