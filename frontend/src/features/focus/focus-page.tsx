@@ -1,8 +1,6 @@
-"use client";
-
-import { useState } from "react";
-import { Filter, Clock, Target, AlertCircle, RefreshCw } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { Filter, Clock, Target, AlertCircle, RefreshCw } from "lucide-react";
+import { useFocus } from "@/features/focus/hooks/use-focus";
 import type { Item } from "@/features/items/types";
 import { cn } from "@/lib/utils";
 
@@ -21,27 +19,7 @@ const SECTION_CONFIGS: Record<string, { title: string; icon: React.ElementType; 
 };
 
 export function FocusPage() {
-  const [filters] = useState<{
-    projectId?: string;
-    status?: string;
-    priority?: string;
-    tag?: string;
-  }>({});
-
-  const { data: sections, isLoading, error } = useQuery({
-    queryKey: ["focus", filters],
-    queryFn: () => {
-      const searchParams = new URLSearchParams();
-      if (filters.projectId) searchParams.set("projectId", filters.projectId);
-      if (filters.status) searchParams.set("status", filters.status);
-      if (filters.priority) searchParams.set("priority", filters.priority);
-      if (filters.tag) searchParams.set("tag", filters.tag);
-      const qs = searchParams.toString();
-      return fetch(`/api/v1/focus${qs ? `?${qs}` : ""}`, {
-        credentials: "include",
-      }).then((res) => res.json()) as Promise<FocusSection[]>;
-    },
-  });
+  const { data: sections, isLoading, error } = useQuery(useFocus({}));
 
   if (isLoading) {
     return (
@@ -53,8 +31,8 @@ export function FocusPage() {
 
   if (error) {
     return (
-      <div className="p-4 rounded-md bg-error-50 border border-error-200 text-error-600 text-sm">
-        Failed to load focus: {error.message}
+      <div className="flex h-full items-center justify-center text-muted-foreground">
+        Failed to load focus. Please try again.
       </div>
     );
   }

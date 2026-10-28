@@ -100,6 +100,8 @@ edited, deleted, or command run.
 | 2026-10-28T03:30:00Z | Wired register page to auth API | frontend/src/features/auth/pages/register-page.tsx | Calls register API with toast success/error feedback |
 | 2026-10-28T03:30:00Z | Wired Inbox page to real items API | frontend/src/features/inbox/pages/inbox-page.tsx | Uses useItems/useCreateItem/useUpdateItem/useDeleteItem hooks instead of mock fetch |
 | 2026-10-28T03:30:00Z | Added Convert dialog in Inbox | frontend/src/features/inbox/pages/inbox-page.tsx | Convert button with type selection dialog calling update API |
+| 2026-10-28T03:45:00Z | Wired Projects page to real API | frontend/src/features/projects/projects-page.tsx | Connected to useItems/useCreateItem/useUpdateItem/useDeleteItem/useMoveItem hooks with toast notifications |
+| 2026-10-28T03:45:00Z | Added Move button to ItemTree | frontend/src/features/items/components/item-tree.tsx | Added Move button with move-dialog for moving items between parents |
 
 ---
 
