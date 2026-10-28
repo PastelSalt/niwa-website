@@ -339,13 +339,13 @@ These are explicitly excluded from MVP and should NOT be implemented yet:
 
 | Priority | Gap | Effort | Blocker for MVP |
 |----------|-----|--------|-----------------|
-| High | Frontend auth API integration (login/register call backend) | Medium | Yes — users cannot authenticate |
+| High | Frontend auth API integration (login/register call backend) | Done | Yes — users can now authenticate |
 | High | Workspace UI (create/select workspace) | Medium | Yes — items hardcode workspace_123 |
-| High | Inbox/Focus/Search real API integration | Medium | Yes — features use mock data |
+| High | Inbox/Focus/Search real API integration | Done | Yes — features now call real API |
 | High | Backend deployment to Render with env vars | Medium | Yes — no live API for frontend to call |
 | Medium | Drag-and-drop / keyboard reorder | Medium | No (accessible fallback needed) |
 | Medium | Move items between parents via UI | Done | No (Move dialog implemented in UI) |
-| Medium | Notifications/toast system | Low | No |
+| Medium | Notifications/toast system | Low | Partially — auth, inbox, projects |
 | Medium | Accessibility audit | Medium | No |
 | Medium | Large-tree virtualization | Medium | No |
 | Low | E2E test execution against live server | Low | No |

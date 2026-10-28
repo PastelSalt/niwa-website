@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { ItemTree } from "@/features/items/components/item-tree";
 import { DetailPanel } from "@/components/layout/detail-panel";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 import type { Item } from "@/features/items/types";
 import { useItems } from "@/features/items/hooks/use-items";
 import { useCreateItem, useUpdateItem, useDeleteItem, useMoveItem } from "@/features/items/hooks/use-items";
@@ -12,6 +13,7 @@ export function ProjectsPage() {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [open, setOpen] = useState(false);
 
+  const { state } = useAuth();
   const { data, isLoading } = useItems();
   const createMutation = useCreateItem();
   const updateMutation = useUpdateItem();
@@ -35,10 +37,10 @@ export function ProjectsPage() {
 
   const handleItemCreate = useCallback((parentId: string | null) => {
     const title = window.prompt("Item title:");
-    if (!title) return;
+    if (!title || !state.user?.workspaceId) return;
     createMutation.mutate(
       {
-        workspaceId: "workspace_123",
+        workspaceId: state.user!.workspaceId,
         parentId,
         title,
       },
@@ -51,7 +53,7 @@ export function ProjectsPage() {
         },
       }
     );
-  }, [createMutation]);
+  }, [createMutation, state.user?.workspaceId]);
 
   const handleItemUpdate = useCallback((item: Item) => {
     updateMutation.mutate(

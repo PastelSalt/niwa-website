@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Plus, Edit2, Trash2, Folder } from "lucide-react";
 import { useItems, useCreateItem, useUpdateItem, useDeleteItem } from "@/features/items/hooks/use-items";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 import type { Item } from "@/features/items/types";
 import { cn } from "@/lib/utils";
 import { toastSuccess, toastError } from "@/lib/toast";
@@ -15,6 +16,7 @@ export function InboxPage() {
   const [convertItemId, setConvertItemId] = useState<string | null>(null);
   const [convertType, setConvertType] = useState<Item["type"]>("task");
 
+  const { state } = useAuth();
   const { data, isLoading, error } = useItems();
   const createMutation = useCreateItem();
   const updateMutation = useUpdateItem();
@@ -24,11 +26,11 @@ export function InboxPage() {
 
   const handleCaptureSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!captureTitle.trim()) return;
+    if (!captureTitle.trim() || !state.user?.workspaceId) return;
     setCaptureError(null);
     createMutation.mutate(
       {
-        workspaceId: "workspace_123",
+        workspaceId: state.user!.workspaceId,
         parentId: null,
         title: captureTitle.trim(),
       },

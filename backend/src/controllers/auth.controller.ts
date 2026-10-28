@@ -88,6 +88,7 @@ export async function register(
       email: input.email,
       name: input.name ?? null,
       avatarUrl: null,
+      workspaceId,
       createdAt: now.toISOString(),
       updatedAt: now.toISOString(),
     },
@@ -137,6 +138,7 @@ export async function login(req: Request, res: Response): Promise<void> {
       email: (user as any).email,
       name: (user as any).name ?? null,
       avatarUrl: null,
+      workspaceId: (user as any).workspaceId,
       createdAt: (user as any).createdAt
         ? (user as any).createdAt.toISOString()
         : new Date().toISOString(),
@@ -183,6 +185,7 @@ export async function me(req: Request, res: Response): Promise<void> {
       email: (user as any).email,
       name: (user as any).name ?? null,
       avatarUrl: null,
+      workspaceId: (user as any).workspaceId,
       createdAt: (user as any).createdAt
         ? (user as any).createdAt.toISOString()
         : new Date().toISOString(),
