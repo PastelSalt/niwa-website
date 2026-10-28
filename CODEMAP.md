@@ -187,6 +187,7 @@ React 19 + TypeScript + Vite + Tailwind CSS v4 + TanStack Query + React Router +
 | `docs/PLAN-06.4-Frontend-Migration.md` | Frontend migration to `frontend/` folder |
 | `docs/PLAN-06.5-Backend-Render.md` | Backend implementation on Render |
 | `docs/PLAN-06.6-Backend-Optimization.md` | Backend optimization plan — DB indexing, Redis caching, API pagination, compression, rate limiting, observability, graceful shutdown |
+| `docs/PLAN-06.7-Frontend-Optimization.md` | Frontend optimization plan — API integration, toast notifications, drag-and-drop reordering, tree virtualization, accessibility |
 | `docs/PLAN-07-Future-Platform.md` | Milestone 7 plan — future platform preparation |
 
 ---

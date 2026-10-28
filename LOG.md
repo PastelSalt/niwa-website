@@ -92,6 +92,7 @@ edited, deleted, or command run.
 | 2026-10-28T03:00:00Z | Created CODEMAP.md | CODEMAP.md | Complete codebase map — all frontend/, backend/, docs/, and root files documented with purpose |
 | 2026-10-28T03:00:00Z | Updated GAPS.md | GAPS.md | Rechecked gaps after backend implementation — backend/auth/workspaces/items/search/focus now complete on backend; frontend integration and UI gaps remain |
 | 2026-10-28T03:00:00Z | Created PLAN-06.6-Backend-Optimization.md | docs/PLAN-06.6-Backend-Optimization.md | Backend optimization plan — DB indexing, Redis caching, API pagination, compression, rate limiting, observability, graceful shutdown |
+| 2026-10-28T03:00:00Z | Created PLAN-06.7-Frontend-Optimization.md | docs/PLAN-06.7-Frontend-Optimization.md | Frontend optimization plan — auth/workspace/inbox/focus/search API integration, toast notifications, drag-and-drop reordering, tree virtualization, accessibility, error handling |
 
 ---
 
