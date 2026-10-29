@@ -11,7 +11,8 @@ import { toastSuccess, toastError } from "@/lib/toast";
 
 export function ProjectsPage() {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-  const [open, setOpen] = useState(false);
+const [open, setOpen] = useState(false);
+const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   const { state } = useAuth();
   const { data, isLoading } = useItems();
@@ -90,7 +91,33 @@ export function ProjectsPage() {
         },
       }
     );
-  }, [deleteMutation, selectedItem?.id]);
+      }, [deleteMutation, selectedItem?.id]);
+
+  const handleToggleExpand = useCallback((id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const handleToggleExpand = useCallback((id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+    const handleToggleExpand = useCallback((id: string) => {
+      setExpandedIds((prev) => {
+        const next = new Set(prev);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        return next;
+      });
+    }, []);
 
   const handleItemMove = useCallback((itemId: string, parentId: string | null) => {
     const node = allItems.find((i) => i.id === itemId);
@@ -115,6 +142,15 @@ export function ProjectsPage() {
     );
   }, [moveMutation, allItems]);
 
+  const handleToggleExpand = useCallback((id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
   return (
     <div className="flex h-full flex-col min-w-0">
       <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
@@ -134,7 +170,7 @@ export function ProjectsPage() {
             onItemCreate={handleItemCreate}
             onItemUpdate={handleItemUpdate}
             onItemDelete={handleItemDelete}
-            onItemMove={handleItemMove}
+            onToggleExpand={handleToggleExpand}
           />
         </div>
         <DetailPanel

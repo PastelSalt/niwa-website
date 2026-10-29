@@ -115,15 +115,4 @@ edited, deleted, or command run.
 1. **LOG.md**: Every session must append new entries to this LOG.md file before concluding work — every file created, edited, deleted, or command run must be logged.
 2. **CODEMAP.md**: Before starting work, check CODEMAP.md to understand the current codebase structure. After creating, editing, or deleting any file, update CODEMAP.md to reflect the change (add new files, remove deleted files, update descriptions if purpose changes).
 3. **GAPS.md**: After completing a milestone or significant feature, review GAPS.md and update any items that are no longer gaps.
-
----
-
-## Rules
-
-1. **LOG.md**: Every session must append new entries to this LOG.md file before concluding work — every file created, edited, deleted, or command run must be logged.
-2. **CODEMAP.md**: Before starting work, check CODEMAP.md to understand the current codebase structure. After creating, editing, or deleting any file, update CODEMAP.md to reflect the change (add new files, remove deleted files, update descriptions if purpose changes).
-3. **GAPS.md**: After completing a milestone or significant feature, review GAPS.md and update any items that are no longer gaps.
-
----
-
-**Rule:** Every session must append new entries to this LOG.md file before concluding work.
+4. **BROKEN.md**: After every session, update BROKEN.md to reflect the current state of TypeScript/lint errors. Before starting work, check BROKEN.md to understand what is broken.

@@ -4,7 +4,7 @@
 
 **Source:** NIWA Web — Project Specification (Sections 5-13), GAPS.md, current frontend codebase review
 
-**Current State:** Frontend is feature-complete but most pages use mock data instead of real API calls. Backend API is implemented and ready. Frontend needs API integration, accessibility improvements, toast notifications, drag-and-drop reordering, and large-tree virtualization.
+**Current State:** Frontend-to-backend API integration is complete (auth, inbox, projects, focus, search all call real backend API). Remaining work: toast notifications, drag-and-drop reordering, large-tree virtualization, accessibility improvements, and workspace selector UI.
 
 ---
 
