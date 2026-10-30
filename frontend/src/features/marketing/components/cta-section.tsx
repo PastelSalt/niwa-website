@@ -36,10 +36,10 @@ export function CTASection() {
           ) : (
             <button
               onClick={() => navigate("/register", { replace: true })}
-              className="px-8 py-4 rounded-xl text-sm font-medium bg-background text-primary hover:bg-sage-200 transition-all shadow-lg hover:shadow-xl"
+              className="flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-medium bg-background text-primary hover:bg-sage-200 transition-all shadow-lg hover:shadow-xl"
             >
-              Get started — it's free{" "}
-              <ArrowRight className="ml-2 w-4 h-4" />
+              Get started — it's free
+              <ArrowRight className="w-4 h-4" />
             </button>
           )}
         </div>

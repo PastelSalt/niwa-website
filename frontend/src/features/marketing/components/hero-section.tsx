@@ -43,10 +43,10 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row items-center justify-start gap-4">
               <button
                 onClick={() => navigate("/register", { replace: true })}
-                className="px-6 py-3 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-sage-700 transition-all shadow-sm hover:shadow-md"
+                className="flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-sage-700 transition-all shadow-sm hover:shadow-md"
               >
-                Get started — it's free{" "}
-                <ArrowRight className="ml-2 w-4 h-4" />
+                Get started — it's free
+                <ArrowRight className="w-4 h-4" />
               </button>
               <button
                 onClick={() => navigate("/login", { replace: true })}
