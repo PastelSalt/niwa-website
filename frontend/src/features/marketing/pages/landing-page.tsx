@@ -43,14 +43,9 @@ export function LandingPage() {
 
         <HowItWorksSection />
 
-        <div className="flex flex-col lg:flex-row gap-16 py-20 px-6 md:px-8 lg:px-12">
-          <div className="flex-1">
-            <TestimonialsSection />
-          </div>
-          <div className="flex-1">
-            <UseCasesSection />
-          </div>
-        </div>
+        <TestimonialsSection />
+
+        <UseCasesSection />
 
         <FAQSection />
 
