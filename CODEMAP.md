@@ -189,6 +189,7 @@ React 19 + TypeScript + Vite + Tailwind CSS v4 + TanStack Query + React Router +
 | `docs/PLAN-06.6-Backend-Optimization.md` | Backend optimization plan — DB indexing, Redis caching, API pagination, compression, rate limiting, observability, graceful shutdown |
 | `docs/PLAN-06.7-Frontend-Optimization.md` | Frontend optimization plan — API integration, toast notifications, drag-and-drop reordering, tree virtualization, accessibility |
 | `docs/PLAN-07-Future-Platform.md` | Milestone 7 plan — future platform preparation |
+| `docs/PLAN-08-Public-Launch.md` | Milestone 8 plan — public website launch: landing page, backend deployment, auth integration, workspace UI, feature polish, CI, docs |
 
 ---
 
