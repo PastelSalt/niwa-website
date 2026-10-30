@@ -9,26 +9,12 @@ import {
   Trash2,
 } from "lucide-react";
 import {
-  DndContext,
-  DragOverlay,
-  DragEndEvent,
-  useSensor,
-  useSensors,
-  PointerSensor,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  useSortable,
-} from "@dnd-kit/sortable";
-import {
   useUpdateItem,
   useDeleteItem,
-  useMoveItem,
 } from "@/features/items/hooks/use-items";
 import type { Item } from "@/features/items/types";
 import { buildTree, type TreeItemNode } from "@/features/items/utils/tree";
 import { cn } from "@/lib/utils";
-import { toastSuccess, toastError } from "@/lib/toast";
 
 interface TreeProps {
   items: Item[];
@@ -52,37 +38,8 @@ export function ItemTree({
 
   const updateMutation = useUpdateItem();
   const deleteMutation = useDeleteItem();
-  const moveMutation = useMoveItem();
 
   const tree = buildTree(items);
-
-  const [moveOpen, setMoveOpen] = useState(false);
-  const [moveItemId, setMoveItemId] = useState<string | null>(null);
-
-  const handleMoveItem = (itemId: string, parentId: string | null) => {
-    const node = findNode(tree, itemId);
-    if (!node) return;
-    moveMutation.mutate(
-      {
-        itemId,
-        input: {
-          parentId,
-          position: 0,
-          version: node.version,
-        },
-      },
-      {
-        onSuccess: () => {
-          setMoveOpen(false);
-          setMoveItemId(null);
-          toastSuccess("Item moved");
-        },
-        onError: (err) => {
-          toastError("Failed to move item", err instanceof Error ? err.message : undefined);
-        },
-      }
-    );
-  };
 
   const handleToggleExpand = useCallback((id: string) => {
     setExpandedIds((prev) => {
@@ -246,14 +203,11 @@ export function ItemTree({
   );
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <SortableContext items={tree.map((n) => n.id)}>
-        <div
-          className="h-full flex flex-col min-w-0"
-          onKeyDown={handleTreeKeyDown}
-          ref={treeRef}
-        >
-          <TreeRows
+    <div
+      className="h-full flex flex-col min-w-0"
+      onKeyDown={handleTreeKeyDown}
+    >
+      <TreeRows
             nodes={tree}
             depth={0}
             isSelected={(id) => id === selectedId}
@@ -277,12 +231,9 @@ export function ItemTree({
               No items yet. Create your first item.
             </div>
           )}
-          <DragOverlay />
         </div>
-      </SortableContext>
-    </DndContext>
-  );
-}
+      );
+  }
 
 function findNode(
   tree: TreeItemNode[],
@@ -401,7 +352,7 @@ function SortableItem({
 }: SortableItemProps) {
   const hasChildren = node.children && node.children.length > 0;
   const isExpanded = expandedIds.has(node.id);
-  const isSel = isSelected(node.id);
+  const isSel = isSelected;
   const isEditing = editingId === node.id;
 
   return (
@@ -508,7 +459,7 @@ function SortableItem({
                 key={child.id}
                 node={child}
                 depth={depth + 1}
-                isSelected={isSelected(child.id)}
+                isSelected={isSelected}
                 onItemSelect={onItemSelect}
                 onItemCreate={onItemCreate}
                 onItemUpdate={onItemUpdate}
@@ -526,7 +477,7 @@ function SortableItem({
             ))}
           </ul>
         )}
+      </div>
       </li>
     );
   }
-}

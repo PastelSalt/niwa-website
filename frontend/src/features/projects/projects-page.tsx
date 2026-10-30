@@ -6,20 +6,18 @@ import { DetailPanel } from "@/components/layout/detail-panel";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import type { Item } from "@/features/items/types";
 import { useItems } from "@/features/items/hooks/use-items";
-import { useCreateItem, useUpdateItem, useDeleteItem, useMoveItem } from "@/features/items/hooks/use-items";
+import { useCreateItem, useUpdateItem, useDeleteItem } from "@/features/items/hooks/use-items";
 import { toastSuccess, toastError } from "@/lib/toast";
 
 export function ProjectsPage() {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 const [open, setOpen] = useState(false);
-const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   const { state } = useAuth();
   const { data, isLoading } = useItems();
   const createMutation = useCreateItem();
   const updateMutation = useUpdateItem();
   const deleteMutation = useDeleteItem();
-  const moveMutation = useMoveItem();
 
   if (isLoading) {
     return (
@@ -93,64 +91,6 @@ const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
     );
       }, [deleteMutation, selectedItem?.id]);
 
-  const handleToggleExpand = useCallback((id: string) => {
-    setExpandedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
-
-  const handleToggleExpand = useCallback((id: string) => {
-    setExpandedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
-    const handleToggleExpand = useCallback((id: string) => {
-      setExpandedIds((prev) => {
-        const next = new Set(prev);
-        if (next.has(id)) next.delete(id);
-        else next.add(id);
-        return next;
-      });
-    }, []);
-
-  const handleItemMove = useCallback((itemId: string, parentId: string | null) => {
-    const node = allItems.find((i) => i.id === itemId);
-    if (!node) return;
-    moveMutation.mutate(
-      {
-        itemId,
-        input: {
-          parentId,
-          position: 0,
-          version: node.version,
-        },
-      },
-      {
-        onSuccess: () => {
-          toastSuccess("Item moved");
-        },
-        onError: (err) => {
-          toastError("Failed to move item", err instanceof Error ? err.message : undefined);
-        },
-      }
-    );
-  }, [moveMutation, allItems]);
-
-  const handleToggleExpand = useCallback((id: string) => {
-    setExpandedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
-
   return (
     <div className="flex h-full flex-col min-w-0">
       <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
@@ -170,7 +110,6 @@ const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
             onItemCreate={handleItemCreate}
             onItemUpdate={handleItemUpdate}
             onItemDelete={handleItemDelete}
-            onToggleExpand={handleToggleExpand}
           />
         </div>
         <DetailPanel
