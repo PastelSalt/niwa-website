@@ -28,7 +28,7 @@ export function LandingPage() {
   }, []);
 
   return (
-    <div className="flex h-screen w-screen flex-col bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen w-full flex-col bg-background text-foreground">
       {/* Skip link for accessibility */}
       <a
         href="#main-content"
@@ -39,7 +39,7 @@ export function LandingPage() {
 
       <Navbar scrolled={scrolled} />
 
-      <main id="main-content" className="flex-1 relative">
+      <main id="main-content" className="flex-1 overflow-y-auto pt-20 relative">
         <HeroSection />
 
         <FeaturesSection />
