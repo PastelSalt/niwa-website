@@ -1,5 +1,6 @@
 "use client";
 
+import { useNavigate } from "react-router-dom";
 import { Mail, FolderTree, Sparkles, ArrowRight } from "lucide-react";
 
 const STEPS = [
@@ -25,6 +26,12 @@ const STEPS = [
 ];
 
 export function HowItWorksSection() {
+  const navigate = useNavigate();
+
+  const handleStartCapturing = () => {
+    navigate("/register", { replace: true });
+  };
+
   return (
     <section
       id="how-it-works"
@@ -45,12 +52,14 @@ export function HowItWorksSection() {
               real.
             </p>
           </div>
-          <div className="flex items-center gap-4 border-t border-border pt-4 w-full md:w-auto">
-            <ArrowRight className="w-4 h-4 text-sage-400 shrink-0" />
-            <span className="text-sm font-medium text-muted-foreground">
-              Start capturing in 30 seconds
-            </span>
-          </div>
+          <button
+            onClick={handleStartCapturing}
+            className="flex items-center gap-4 border-t border-border pt-4 w-full md:w-auto text-sm font-medium text-sage-600 hover:text-sage-700 transition-colors"
+            aria-label="Start capturing in 30 seconds"
+          >
+            <ArrowRight className="w-4 h-4 shrink-0" />
+            Start capturing in 30 seconds
+          </button>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {STEPS.map((step, i) => (
