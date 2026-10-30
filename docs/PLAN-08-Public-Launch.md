@@ -6,6 +6,8 @@
 
 **Deliverable:** A public web application at a stable URL where users can register, log in, create and manage hierarchical items, and where the site behaves like a normal production web app (landing page, 404 handling, auth, loading states, error handling).
 
+**Status:** Not started — no items implemented yet.
+
 ---
 
 ## Current State
