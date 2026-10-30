@@ -10,10 +10,7 @@ import {
   TestimonialsSection,
   UseCasesSection,
 } from "@/features/marketing/components/social-proof";
-import {
-  PricingSection,
-  FAQSection,
-} from "@/features/marketing/components/pricing-faq";
+import { FAQSection } from "@/features/marketing/components/pricing-faq";
 import { CTASection } from "@/features/marketing/components/cta-section";
 
 export function LandingPage() {
@@ -54,8 +51,6 @@ export function LandingPage() {
             <UseCasesSection />
           </div>
         </div>
-
-        <PricingSection />
 
         <FAQSection />
 

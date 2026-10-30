@@ -4,7 +4,7 @@
 
 **Objective:** Define the most complete, production-ready landing page possible for niwa-website — a conversion-focused, visually rich, accessible, and performant marketing page that sells the product, explains the value proposition, and drives sign-ups.
 
-**Deliverable:** A single-page marketing site at `/` with multiple sections, scroll-triggered animations, interactive demos, social proof, pricing, FAQ, and full accessibility compliance.
+**Deliverable:** A single-page marketing site at `/` with multiple sections, scroll-triggered animations, interactive demos, social proof, FAQ, and full accessibility compliance.
 
 ---
 
@@ -122,23 +122,13 @@ Steps:
 - Examples: Solo developer, Student, Writer, Hobbyist, Freelancer
 - Each: icon, title, 2-line description, "Learn more" link
 
-### 2.7 Pricing Section
-
-- Toggle: Monthly / Yearly (yearly = 20% off badge)
-- 3 tiers:
-  1. **Free** — $0/mo — 3 projects, basic nesting, community support
-  2. **Garden** — $8/mo — Unlimited projects, unlimited depth, priority support
-  3. **Greenhouse** — $15/mo — Everything in Garden + export, advanced search, focus filters
-- Feature checklist per tier
-- Primary CTA on middle tier
-
-### 2.8 FAQ Section
+### 2.7 FAQ Section
 
 - Accordion: 6–8 questions (collapsible answers)
 - Examples: Is there a free plan? Can I export my data? How does nesting work? Is my data secure? Can I use it on mobile?
 - Link to contact/support
 
-### 2.9 Final CTA Section
+### 2.8 Final CTA Section
 
 - Centered, large, colored background (sage or cream)
 - Headline: "Ready to plant your first idea?"
@@ -146,10 +136,10 @@ Steps:
 - Primary button: "Get started — it's free"
 - Decorative blurred gradient circles behind
 
-### 2.10 Footer
+### 2.9 Footer
 
 - NIWA wordmark
-- Nav links: Features, Pricing, FAQ, Log in, Get started
+- Nav links: Features, How it works, FAQ, Log in, Get started
 - Auth-aware: Open app (if logged in)
 - Legal: Privacy, Terms, Cookie policy
 - Social: GitHub, Twitter, Email
@@ -265,7 +255,6 @@ frontend/src/features/marketing/
 │   ├── how-it-works.tsx      (3-step flow)
 │   ├── testimonials.tsx      (social proof)
 │   ├── use-cases.tsx         (use case cards)
-│   ├── pricing.tsx           (pricing tiers)
 │   ├── faq.tsx               (accordion)
 │   ├── cta-section.tsx       (final call to action)
 │   ├── tree-illustration.tsx (animated CSS tree)
@@ -314,7 +303,6 @@ frontend/src/features/marketing/
 - [ ] All nav links work (scroll to section or route)
 - [ ] Auth-state buttons show correctly (login vs open app)
 - [ ] FAQ accordion opens/closes
-- [ ] Pricing toggle switches monthly/yearly
 - [ ] Mobile menu opens/closes, traps focus
 
 ### 8.3 Accessibility
@@ -340,7 +328,7 @@ frontend/src/features/marketing/
 3. **Phase 3:** Features section
 4. **Phase 4:** How it works section
 5. **Phase 5:** Social proof + Use cases
-6. **Phase 6:** Pricing + FAQ
+6. **Phase 6:** FAQ
 7. **Phase 7:** Final CTA
 8. **Phase 8:** Animations + scroll reveals
 9. **Phase 9:** Accessibility audit + polish
