@@ -10,8 +10,14 @@ import { SearchPage } from "@/features/search/search-page";
 import { SettingsPage } from "@/features/settings/settings-page";
 import { AccountSettingsPage } from "@/features/settings/account-page";
 import { AppearanceSettingsPage } from "@/features/settings/appearance-page";
+import { LandingPage } from "@/features/marketing/pages/landing-page";
+import { NotFoundPage } from "@/features/marketing/pages/not-found-page";
 
 export const router = createBrowserRouter([
+  {
+    path: "/",
+    Component: LandingPage,
+  },
   {
     path: "/login",
     Component: LoginPage,
@@ -34,5 +40,9 @@ export const router = createBrowserRouter([
       { path: "settings/account", Component: AccountSettingsPage },
       { path: "settings/appearance", Component: AppearanceSettingsPage },
     ],
+  },
+  {
+    path: "*",
+    Component: NotFoundPage,
   },
 ]);
