@@ -16,9 +16,10 @@ export function Footer() {
   ];
 
   const legalLinks = [
-    { href: "#", label: "Privacy" },
-    { href: "#", label: "Terms" },
-    { href: "#", label: "Cookie policy" },
+    { href: "/privacy", label: "Privacy" },
+    { href: "/terms", label: "Terms" },
+    { href: "/cookie", label: "Cookie policy" },
+    { href: "/disclaimer", label: "Disclaimer" },
   ];
 
   return (

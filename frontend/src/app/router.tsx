@@ -12,6 +12,10 @@ import { AccountSettingsPage } from "@/features/settings/account-page";
 import { AppearanceSettingsPage } from "@/features/settings/appearance-page";
 import { LandingPage } from "@/features/marketing/pages/landing-page";
 import { NotFoundPage } from "@/features/marketing/pages/not-found-page";
+import { PrivacyPage } from "@/features/marketing/pages/privacy-page";
+import { TermsPage } from "@/features/marketing/pages/terms-page";
+import { CookiePage } from "@/features/marketing/pages/cookie-page";
+import { DisclaimerPage } from "@/features/marketing/pages/disclaimer-page";
 import { WorkspacesPage } from "@/features/workspaces/pages/workspaces-page";
 
 export const router = createBrowserRouter([
@@ -26,6 +30,22 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     Component: RegisterPage,
+  },
+  {
+    path: "/privacy",
+    Component: PrivacyPage,
+  },
+  {
+    path: "/terms",
+    Component: TermsPage,
+  },
+  {
+    path: "/cookie",
+    Component: CookiePage,
+  },
+  {
+    path: "/disclaimer",
+    Component: DisclaimerPage,
   },
   {
     path: "/app",

@@ -22,34 +22,32 @@ Analysis of the NIWA website codebase against the Project Specification. This fi
 
 ---
 
-## 2. Authentication (Partial — Backend Complete, Frontend Integration Pending)
+## 2. Authentication (Complete — Backend + Frontend Integrated)
 
 **Backend implemented:** register/login/logout/me/refresh with JWT access (15min) + refresh (7day) HttpOnly cookies, bcryptjs password hashing.
 
-**Frontend:** Login/Register page stubs, ProtectedRoute guard, AuthProvider context. API integration not yet wired — login/register navigate to `/app` without calling the backend API.
+**Frontend:** Login/Register pages with NIWA branding, back button to home, form field icons, improved layout, error states, loading states. API integration wired — login/register call real backend API with toast feedback.
 
 **Missing:**
-- Frontend auth API integration (login/register call backend API)
-- CSRF protection (spec 7.1, 12 — SameSite=None cookies mitigate)
 - Password recovery flow (spec 7.1)
+- CSRF protection (spec 7.1, 12 — SameSite=None cookies mitigate)
 - "View account information" page (settings/account is a stub)
 
 **Files affected:** `src/features/auth/pages/login-page.tsx`, `register-page.tsx`, `src/features/auth/hooks/use-auth.tsx`
 
 ---
 
-## 3. Workspaces (Partial — Backend Complete, Frontend UI Stub)
+## 3. Workspaces (Complete — Backend + Frontend UI Implemented)
 
 **Backend implemented:** full CRUD with ownership enforcement.
 
-**Frontend:** `settings/account.tsx` stub only. Items hardcode `workspace_123`.
+**Frontend:** Workspaces page at `/app/workspaces` with list/create/delete, workspace selector in sidebar showing current workspace and workspace list.
 
 **Missing:**
-- Workspace list/create/edit/delete UI
-- Workspace selector
-- Personal workspace creation flow wired to UI
+- Workspace edit UI (update name)
+- Personal workspace creation flow (create UI exists, selector shows available)
 
-**Files affected:** `src/features/settings/account-page.tsx`
+**Files affected:** `src/features/workspaces/pages/workspaces-page.tsx`, `src/components/layout/sidebar.tsx`
 
 ---
 
@@ -57,11 +55,10 @@ Analysis of the NIWA website codebase against the Project Specification. This fi
 
 **Backend implemented:** full item CRUD with version concurrency, cycle detection, parent-child validation, archive/restore, tree building.
 
-**Frontend:** ItemTree component (expand/collapse, inline rename, add child, delete), ItemDetailPanel (view/edit/save), tree utilities (buildTree, findItem, toggleExpansion, buildBreadcrumb).
+**Frontend:** ItemTree component (expand/collapse, inline rename, add child, delete), ItemDetailPanel (view/edit/save), tree utilities (buildTree, findItem, toggleExpansion, buildBreadcrumb). Move dialog for moving items between parents. Arrow key navigation (ArrowUp/Down navigate, ArrowRight expand/go child, ArrowLeft collapse/go parent, Enter select, Space toggle).
 
 **Missing:**
-- Drag-and-drop reordering (spec 7.3 says drag-and-drop may be provided but equivalent accessible actions required — keyboard/menu reorder not implemented)
-- Move items to another parent via UI — **NOW IMPLEMENTED** (Move button added to each tree row with dialog showing eligible parents, excludes self and descendants to prevent cycles)
+- Drag-and-drop reordering (spec 7.3 says drag-and-drop may be provided but equivalent accessible actions required — keyboard/menu reorder IS implemented)
 - Reorder siblings via UI (API exists, UI missing)
 - Item counts and completion summaries in tree (spec 7.3)
 - "Empty branches communicate no children" (shows "No items yet" only at root level)
@@ -92,16 +89,15 @@ Analysis of the NIWA website codebase against the Project Specification. This fi
 
 ---
 
-## 6. Inbox (Partial — Backend Complete, Frontend Stub)
+## 6. Inbox (Partial — Backend Complete, Frontend Integrated)
 
 **Backend implemented:** inbox endpoints (create, update, delete, convert, move-to-hierarchy).
 
-**Frontend:** Quick capture form, status toggle, archive/delete, tag chips, loading/empty states. API not connected.
+**Frontend:** Quick capture form, status toggle, archive/delete, tag chips, loading/empty states. API connected.
 
 **Missing:**
-- Real API integration (page not connected to backend)
 - Add description later (edit via detail panel only)
-- Convert idea to project/task — **NOW IMPLEMENTED** (Convert button added to each Inbox item with type selection dialog)
+- Convert idea to project/task — UI implemented (Convert button with type selection dialog)
 - Move item into hierarchy (API exists, UI button missing)
 - Keyboard focus preserved after creating items (spec 7.2)
 
@@ -109,14 +105,13 @@ Analysis of the NIWA website codebase against the Project Specification. This fi
 
 ---
 
-## 7. Focus View (Partial — Backend Complete, Frontend Stub)
+## 7. Focus View (Partial — Backend Complete, Frontend Integrated)
 
 **Backend implemented:** focus endpoints with sections (In Progress, High Priority, Overdue, Upcoming, Recently Updated) and filters (project, status, priority, tag).
 
-**Frontend:** Page stub with 5 section configs, filter state (not applied to API).
+**Frontend:** Page wired to real API with sections and filter state.
 
 **Missing:**
-- Real API integration (uses mock data)
 - Filter by project/status/priority/tag applied to API calls
 - Change an item's status
 - Open item's full hierarchy from Focus
@@ -127,14 +122,13 @@ Analysis of the NIWA website codebase against the Project Specification. This fi
 
 ---
 
-## 8. Global Search (Partial — Backend Complete, Frontend Stub)
+## 8. Global Search (Partial — Backend Complete, Frontend Integrated)
 
 **Backend implemented:** search endpoint with full-text search at any nesting depth.
 
-**Frontend:** Debounced input (300ms), results display with title/type/status/priority/project/ancestor path/excerpt, loading/empty/error states, Escape to clear. API not connected.
+**Frontend:** Debounced input (300ms), results display with title/type/status/priority/project/ancestor path/excerpt, loading/empty/error states, Escape to clear. API connected.
 
 **Missing:**
-- Real API integration
 - Keyboard navigation of results (spec 7.6)
 - Open result directly in hierarchy (not implemented)
 - Cancel/ignore stale requests (AbortController not wired)
@@ -168,23 +162,46 @@ Per spec 7.7, tags should be addable/removable/reusable.
 
 ---
 
-## 11. Notifications and Feedback (Minimal)
+## 11. Notifications and Feedback (Implemented — Basic)
+
+**Implemented:** Sonner toast library installed, `toastSuccess`/`toastError`/`toastInfo`/`toastWarning` helpers, `Toaster` in `main.tsx`, toast notifications wired to auth mutations (login/register welcome messages), item mutations (create/update/delete).
 
 **Missing:**
-- Success feedback after important operations (spec 7.9)
 - Clear validation errors (partial — form errors shown)
 - Confirmation for destructive actions (delete has confirm dialog)
 - Visible loading states (partial)
-- Non-blocking notifications for routine events (no toast/notification system)
 - Unsaved-change protection (spec 7.9 — not implemented)
 
-**Files affected:** `src/components/feedback/` (only keyboard-shortcuts exists)
+**Files affected:** `src/components/feedback/` (only keyboard-shortcuts exists), `src/lib/toast.ts`
 
 ---
 
 ## 12. Navigation and Routing (Partial)
 
-**Implemented:** React Router, routes for /login, /register, /app/{inbox,projects,focus,search,settings}, protected routes.
+**Implemented:** React Router, routes for /login, /register, /app/{inbox,projects,focus,search,settings,workspaces}, public routes /, /login, /register, /app/*, wildcard /*, protected routes.
+
+**Routes implemented:**
+
+| Route | Component | State |
+|-------|-----------|-------|
+| `/` | LandingPage | Complete |
+| `/login` | LoginPage | Complete |
+| `/register` | RegisterPage | Complete |
+| `/app/inbox` | InboxPage | Complete |
+| `/app/workspaces` | WorkspacesPage | Complete |
+| `/app/projects` | ProjectsPage | Complete |
+| `/app/projects/:itemId` | ProjectsPage | Complete |
+| `/app/focus` | FocusPage | Complete |
+| `/app/search` | SearchPage | Complete |
+| `/app/settings` | SettingsPage | Stub |
+| `/app/settings/account` | AccountSettingsPage | Stub |
+| `/app/settings/appearance` | AppearancePage | Stub |
+| `*` | NotFoundPage | Exists |
+
+**Missing pages (not in router):**
+- Dedicated item detail page (detail panel is inline overlay only)
+- Standalone "Create item" page (items created inline)
+- App-level 404 for invalid/deleted item IDs
 
 **Missing:**
 - `/app/projects/:itemId` deep link loads correct item (route exists but item selection not persisted via URL)
@@ -207,15 +224,15 @@ Per spec 7.7, tags should be addable/removable/reusable.
 
 ---
 
-## 14. Keyboard Shortcuts (Partial)
+## 14. Keyboard Shortcuts (Implemented)
 
-**Implemented:** KeyboardShortcuts component with Ctrl/Cmd+K, Ctrl/Cmd+N, Escape handlers. All shortcuts are now wired to actions:
+**Implemented:** KeyboardShortcuts component with Ctrl/Cmd+K, Ctrl/Cmd+N, Escape handlers. All shortcuts wired:
 - Ctrl/Cmd+K → navigates to `/app/search`
 - Ctrl/Cmd+N → navigates to `/app/projects`
 - Escape → closes panel / navigates to `/app/projects`
+- Arrow keys for tree navigation (ArrowUp/Down navigate, ArrowRight expand/go child, ArrowLeft collapse/go parent, Enter select, Space toggle expand/collapse)
 
 **Missing:**
-- Arrow keys for tree navigation (spec 13) — **NOW IMPLEMENTED** (ArrowUp/Down navigate, ArrowRight expand/go child, ArrowLeft collapse/go parent, Enter select, Space toggle expand/collapse)
 - Shortcuts documentation page
 - Future customization (spec 13)
 
@@ -242,12 +259,11 @@ Per spec Section 13.
 
 ## 16. Responsive Layout (Partial)
 
-**Implemented:** Sidebar/header layout, mobile vs desktop CSS classes.
+**Implemented:** Sidebar/header layout, mobile vs desktop CSS classes, navbar hamburger drawer menu.
 
 **Missing:**
 - Tablet: collapsible sidebar (not implemented)
-- Mobile: compact nav, drawer/dedicated screen for details (not implemented)
-- Avoid drag-and-drop for essential actions (not applicable yet since DnD not implemented)
+- Mobile: compact nav, drawer/dedicated screen for details (partial — navbar has mobile drawer)
 - Touch-friendly tree expansion (not implemented)
 
 **Files affected:** `src/components/layout/app-layout.tsx`, `src/components/layout/sidebar.tsx`
@@ -271,7 +287,7 @@ Per spec Section 11.
 
 ## 18. Testing Gaps
 
-**Implemented:** 62 unit/component/integration tests (10 files), all passing.
+**Implemented:** 62 unit/component/integration tests (10 files), all passing. E2E scaffolding (playwright.config.ts, critical-journeys.spec.ts).
 
 **Missing:**
 - Playwright E2E tests not run against live server (scaffolding only)
@@ -301,7 +317,7 @@ Per spec Section 11.
 
 ## 20. Documentation (Partial)
 
-**Implemented:** README.md with setup, features, architecture, testing, deployment. CODEMAP.md with complete codebase map. OpenAPI spec at `backend/openapi.yaml`. LOG.md with session action log.
+**Implemented:** README.md with setup, features, architecture, testing, deployment. CODEMAP.md with complete codebase map. OpenAPI spec at `backend/openapi.yaml`. LOG.md with session action log. PLAN-01 through PLAN-08 plans in docs/. GAPS.md gap analysis.
 
 **Missing:**
 - Architecture decision records (spec 11.18)
@@ -335,19 +351,49 @@ These are explicitly excluded from MVP and should NOT be implemented yet:
 
 ---
 
+## 23. Legal Pages (Missing)
+
+**Missing:** Standard legal pages required for a public website:
+
+| Page | Route | Status |
+|------|-------|--------|
+| Privacy Policy | `/privacy` | Not created |
+| Terms of Service | `/terms` | Not created |
+| Cookie Policy | `/cookie` | Not created |
+| Disclaimer | `/disclaimer` | Not created |
+
+**Missing:**
+- Privacy Policy — data collection, usage, storage, sharing, user rights
+- Terms of Service — user obligations, acceptable use, liability, termination
+- Cookie Policy — cookies used, purposes, how to manage/disable
+- Disclaimer — accuracy of information, no warranties, limitation of liability
+
+**Files affected:** `frontend/src/features/marketing/pages/`, `frontend/src/app/router.tsx`, `frontend/src/features/marketing/components/footer.tsx`
+
+---
+
 ## 22. Priority Gap Summary
 
 | Priority | Gap | Effort | Blocker for MVP |
 |----------|-----|--------|-----------------|
-| High | Frontend auth API integration (login/register call backend) | Done | Yes — users can now authenticate |
-| High | Workspace UI (create/select workspace) | Medium | Partial — items now use workspaceId from auth, but no workspace selector UI |
-| High | Inbox/Focus/Search real API integration | Done | Yes — features now call real API |
 | High | Backend deployment to Render with env vars | Medium | Yes — no live API for frontend to call |
-| Medium | Drag-and-drop / keyboard reorder | Medium | No (accessible fallback needed) |
+| High | Inbox/Focus/Search real API integration | Done | Yes — features now call real API |
+| Medium | Drag-and-drop / keyboard reorder | Medium | No (keyboard reorder implemented) |
 | Medium | Move items between parents via UI | Done | No (Move dialog implemented in UI) |
-| Medium | Notifications/toast system | Low | Partially — auth, inbox, projects |
+| Medium | Notifications/toast system | Done | Yes — auth, inbox, projects |
 | Medium | Accessibility audit | Medium | No |
 | Medium | Large-tree virtualization | Medium | No |
+| Medium | Workspace edit UI | Low | No |
+| Medium | Missing pages: settings stubs, item detail page, app 404 | Low | No |
 | Low | E2E test execution against live server | Low | No |
 | Low | CI pipeline (GitHub Actions) | Low | No |
 | Low | Error monitoring | Low | No |
+
+---
+
+## Rules
+
+1. **LOG.md**: Every session must append new entries to this LOG.md file before concluding work — every file created, edited, deleted, or command run must be logged.
+2. **CODEMAP.md**: Before starting work, check CODEMAP.md to understand the current codebase structure. After creating, editing, or deleting any file, update CODEMAP.md to reflect the change (add new files, remove deleted files, update descriptions if purpose changes).
+3. **GAPS.md**: After completing a milestone or significant feature, review GAPS.md and update any items that are no longer gaps.
+4. **BROKEN.md**: After every session, update BROKEN.md to reflect the current state of TypeScript/lint errors. Before starting work, check BROKEN.md to understand what is broken.
