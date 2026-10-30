@@ -1,5 +1,7 @@
 # Plan: Milestone 4 — Inbox and Focus
 
+**Status: PARTIAL** (pages created and wired to real API; filters not fully applied to API calls, change item status not implemented, navigate back to project context missing, only-show-useful-sections not implemented)
+
 **Source:** NIWA Web — Project Specification, Section 16 (Milestone 4)
 
 **Objective:** Implement quick capture, add Inbox filtering and actions, build Focus sections, add status and priority filters, link Focus items back to their project context.

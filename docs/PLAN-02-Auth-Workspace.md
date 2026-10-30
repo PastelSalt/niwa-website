@@ -1,5 +1,7 @@
 # Plan: Milestone 2 — Authentication and Workspace
 
+**Status: PARTIAL** (auth API integrated and protected routes working; workspace UI stub — no workspace list/create/selector)
+
 **Source:** NIWA Web — Project Specification, Section 16 (Milestone 2)
 
 **Objective:** Implement login and registration screens, integrate the authentication API, add protected routes, build the workspace layout, handle loading, errors, and session expiration.

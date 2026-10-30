@@ -1,5 +1,7 @@
 # Plan: Milestone 5 — Search and Polish
 
+**Status: PARTIAL** (search page wired to real API, keyboard shortcuts wired, themes implemented; missing keyboard navigation of results, open result in hierarchy, cancel stale requests, accessibility audit, responsive tablet/mobile, large-tree virtualization)
+
 **Source:** NIWA Web — Project Specification, Section 16 (Milestone 5)
 
 **Objective:** Implement global search, add breadcrumbs and search navigation, improve loading and empty states, add keyboard shortcuts, add light and dark themes, audit accessibility and responsive behavior, improve large-tree performance.

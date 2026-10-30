@@ -1,5 +1,7 @@
 # Plan: Milestone 0.5 — GitHub, Vercel Deploy, and MongoDB Atlas Setup
 
+**Status: COMPLETE**
+
 **Objective:** Push the local repository to GitHub, deploy via Vercel using the GitHub repo, and set up a MongoDB Atlas connection file (`src/lib/db.ts`) following clean architecture and security best practices.
 
 ---

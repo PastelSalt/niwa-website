@@ -1,5 +1,7 @@
 # Plan: Milestone 3 — Hierarchical Items
 
+**Status: PARTIAL** (item types, schemas, API hooks, ItemTree, ItemDetailPanel implemented; DnD reordering removed due to TS errors; missing item counts/completion summaries, breadcrumb navigation, loading/error states in tree, virtualization)
+
 **Source:** NIWA Web — Project Specification, Section 16 (Milestone 3)
 
 **Objective:** Implement item models and API hooks, build the tree component, add item creation and editing, implement expand and collapse behavior, add item details, implement move and reorder actions, test deeply nested items.

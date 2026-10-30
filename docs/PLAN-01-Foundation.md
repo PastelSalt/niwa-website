@@ -1,5 +1,7 @@
 # Plan: Milestone 1 — Project Foundation
 
+**Status: COMPLETE**
+
 **Source:** NIWA Web — Project Specification, Section 16 (Milestone 1)
 
 **Objective:** Initialize the React and TypeScript application, configure Vite, Tailwind CSS, component primitives, linting, formatting, tests, routing structure, theme tokens, application shell, API client, and document the expected backend contract.

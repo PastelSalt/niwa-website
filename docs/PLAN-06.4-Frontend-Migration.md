@@ -1,5 +1,7 @@
 # Plan: Milestone 0.4 — Frontend Migration to `frontend/` Folder
 
+**Status: COMPLETE**
+
 **Objective:** Reorganize the repository root so all frontend code lives under `frontend/`, leaving room for a sibling `backend/` directory. This is a pure move/repoint — no feature changes.
 
 **Source:** NIWA Web — Project Specification, Sections 1.3, 9 (frontend architecture), 19 (deployment)

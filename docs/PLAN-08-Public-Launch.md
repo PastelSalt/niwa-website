@@ -1,12 +1,12 @@
 # Plan: Milestone 8 — Public Website Launch
 
+**Status: NOT STARTED**
+
 **Source:** NIWA Web — Project Specification, Sections 1–22 (Definition of Done)
 
 **Objective:** Transform the current development-state codebase into a proper, publicly usable website with standard operations: a public landing page, working authentication flow, deployed backend, complete core features, responsive layout, and production-grade polish.
 
 **Deliverable:** A public web application at a stable URL where users can register, log in, create and manage hierarchical items, and where the site behaves like a normal production web app (landing page, 404 handling, auth, loading states, error handling).
-
-**Status:** Not started — no items implemented yet.
 
 ---
 

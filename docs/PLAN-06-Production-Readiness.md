@@ -1,5 +1,7 @@
 # Plan: Milestone 6 — Production Readiness
 
+**Status: PARTIAL** (frontend deployed on Vercel, lint/typecheck/test/build pass; backend not deployed to Render with env vars, VITE_API_BASE_URL placeholder in Vercel, no CI pipeline, no error monitoring)
+
 **Source:** NIWA Web — Project Specification, Section 16 (Milestone 6)
 
 **Objective:** Complete automated tests, verify API authorization behavior, configure production environment variables, deploy the website and API, configure monitoring and error reporting, document deployment and recovery procedures, prepare a portfolio demonstration.

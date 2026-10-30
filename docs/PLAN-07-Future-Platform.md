@@ -1,5 +1,7 @@
 # Plan: Milestone 7 — Future Platform Preparation
 
+**Status: PARTIAL** (backend/openapi.yaml exists; OpenAPI spec completion, contract stabilization, API versioning documentation, Electron vs web component classification not done)
+
 **Source:** NIWA Web — Project Specification, Section 16 (Milestone 7)
 
 **Objective:** Finalize OpenAPI documentation, stabilize authentication contracts, stabilize item and hierarchy contracts, document API versioning, record shared product behavior, identify Electron-specific vs web-specific components.

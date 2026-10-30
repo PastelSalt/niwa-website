@@ -2,6 +2,8 @@
 
 # Plan: Milestone 0.6 — Backend Performance & Reliability Optimization
 
+**Status: NOT STARTED**
+
 **Objective:** Optimize the NIWA backend for production readiness — improve query performance, add caching, implement proper indexing, enhance error handling/observability, and harden the API for production traffic.
 
 **Source:** NIWA Web — Project Specification (Sections 10, 11, 12, 19), GAPS.md, current backend codebase review

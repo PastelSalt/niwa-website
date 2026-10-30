@@ -1,5 +1,7 @@
 # Plan: Milestone 0.5 — Backend Implementation on Render
 
+**Status: PARTIAL** (backend code implemented, typecheck/lint/build pass, render.yaml and openapi.yaml created; not yet deployed to Render with environment variables set)
+
 **Objective:** Add a Node.js/Express/MongoDB backend service to the same repository under a `backend/` directory, deployable independently on Render (free tier), consumed by the React frontend via documented API contracts.
 
 **Source:** NIWA Web — Project Specification, Sections 1.3, 4.1, 10, 11, 12, 19

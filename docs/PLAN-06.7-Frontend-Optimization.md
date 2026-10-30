@@ -1,6 +1,8 @@
 # Plan: Milestone 0.6 — Frontend Performance & Integration
 
-**Objective:** Optimize the NIWA frontend for production — connect all features to the real backend API, add missing UI interactions (toasts, drag-and-drop, virtualization), improve accessibility, and prepare for production deployment.
+**Status: PARTIAL** (sonner toast library installed, toast utility and Toaster added, all features wired to real backend API; DnD reordering removed due to TS errors, large-tree virtualization not done, accessibility audit not done, responsive tablet/mobile not done)
+
+**Source:** NIWA Web — Project Specification (Sections 5-13), GAPS.md, current frontend codebase review
 
 **Source:** NIWA Web — Project Specification (Sections 5-13), GAPS.md, current frontend codebase review
 
