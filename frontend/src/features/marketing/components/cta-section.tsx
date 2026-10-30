@@ -18,25 +18,25 @@ export function CTASection() {
         <div className="relative z-10">
           <h2
             id="cta-heading"
-            className="text-3xl md:text-4xl font-bold mb-6 leading-tight"
+            className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight"
           >
             Ready to plant your first idea?
           </h2>
-          <p className="text-primary-foreground/90 mb-10 text-lg max-w-lg mx-auto leading-relaxed">
+          <p className="text-white/90 mb-10 text-lg max-w-lg mx-auto leading-relaxed">
             Sign up and start organizing your projects today. No credit card
             required.
           </p>
           {isAuthenticated ? (
             <button
               onClick={() => navigate("/app/projects", { replace: true })}
-              className="px-8 py-4 rounded-xl text-sm font-medium bg-background text-primary hover:bg-sage-200 transition-all shadow-lg hover:shadow-xl"
+              className="flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-medium bg-background text-primary hover:bg-sage-200 transition-all shadow-lg hover:shadow-xl mx-auto"
             >
               Open app
             </button>
           ) : (
             <button
               onClick={() => navigate("/register", { replace: true })}
-              className="flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-medium bg-background text-primary hover:bg-sage-200 transition-all shadow-lg hover:shadow-xl"
+              className="flex flex-col sm:flex-row items-center gap-2 px-8 py-4 rounded-xl text-sm font-medium bg-background text-primary hover:bg-sage-200 transition-all shadow-lg hover:shadow-xl mx-auto"
             >
               Get started — it's free
               <ArrowRight className="w-4 h-4" />
