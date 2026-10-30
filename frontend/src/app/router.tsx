@@ -12,6 +12,7 @@ import { AccountSettingsPage } from "@/features/settings/account-page";
 import { AppearanceSettingsPage } from "@/features/settings/appearance-page";
 import { LandingPage } from "@/features/marketing/pages/landing-page";
 import { NotFoundPage } from "@/features/marketing/pages/not-found-page";
+import { WorkspacesPage } from "@/features/workspaces/pages/workspaces-page";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, Component: AppLayout },
       { path: "inbox", Component: InboxPage },
+      { path: "workspaces", Component: WorkspacesPage },
       { path: "projects", Component: ProjectsPage },
       { path: "projects/:itemId", Component: ProjectsPage },
       { path: "focus", Component: FocusPage },
