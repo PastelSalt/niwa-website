@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import { GitBranch, X, Menu } from "lucide-react";
@@ -22,6 +22,22 @@ export function Navbar({ scrolled }: NavbarProps) {
     { href: "#pricing", label: "Pricing" },
     { href: "#faq", label: "FAQ" },
   ];
+
+  const handleScrollTo = useCallback(
+    (hash: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      setIsOpen(false);
+      const id = hash.replace("#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        const navbarHeight = 64;
+        const offsetTop =
+          el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+        window.scrollTo({ top: offsetTop, behavior: "smooth" });
+      }
+    },
+    []
+  );
 
   const handleAuthAction = () => {
     setIsOpen(false);
@@ -65,7 +81,7 @@ export function Navbar({ scrolled }: NavbarProps) {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setIsOpen(false)}
+                onClick={(e) => handleScrollTo(link.href, e)}
                 className="text-muted-foreground hover:text-sage-600 transition-colors"
               >
                 {link.label}
@@ -126,7 +142,10 @@ export function Navbar({ scrolled }: NavbarProps) {
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => {
+                    setIsOpen(false);
+                    handleScrollTo(link.href, e);
+                  }}
                   className="text-muted-foreground hover:text-sage-600 transition-colors"
                 >
                   {link.label}
